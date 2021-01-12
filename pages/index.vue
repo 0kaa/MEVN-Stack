@@ -70,6 +70,7 @@ export default {
           .then(res => {
             console.log(res.data);
             this.$refs.form.reset();
+            this.dialog = false
           })
           .catch(err => {
             console.log(err);
