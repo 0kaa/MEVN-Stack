@@ -36,18 +36,18 @@
                 <v-icon>
                   mdi-thumb-up-outline
                 </v-icon>
-                <v-text class="ml-2">
+                <h4 class="ml-2">
                   {{ post.like || 0 }}
-                </v-text>
+                </h4>
               </v-btn>
 
               <v-btn color="red" text>
                 <v-icon>
                   mdi-thumb-down-outline
                 </v-icon>
-                <v-text class="ml-2">
+                <h4 class="ml-2">
                   {{ post.dislike || 0 }}
-                </v-text>
+                </h4>
               </v-btn>
             </v-card-actions>
           </v-card>

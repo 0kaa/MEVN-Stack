@@ -13,7 +13,7 @@ export const mutations = {
     for (let i = 0; i <= data.posts.length - 1; i++) {
       state.posts.posts.push(data.posts[i]);
     }
-    state.posts.totalPages = data.totalpages;
+    state.posts.totalPages = data.totalPages;
     state.posts.currentPage = data.currentPage;
   }
 };
