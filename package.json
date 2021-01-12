@@ -2,7 +2,7 @@
   "name": "express-nuxt",
   "version": "1.0.0",
   "private": true,
-  "proxy":"http://127.0.0.1:5000/",
+  "proxy": "http://127.0.0.1:5000/",
   "scripts": {
     "dev": "nuxt",
     "build": "nuxt build",
@@ -15,6 +15,7 @@
     "@nuxtjs/proxy": "^2.1.0",
     "axios": "^0.21.1",
     "core-js": "^3.6.5",
+    "moment": "^2.29.1",
     "nuxt": "^2.14.6"
   },
   "devDependencies": {
