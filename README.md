@@ -19,5 +19,5 @@ $ npm run generate
 
 For detailed explanation on how things work, check out [Nuxt.js docs](https://nuxtjs.org).
 
-   - [] Register/Login Authentication (API: POST -> `/register`, POST > `/login`)
-   - [] User Create Posts (API: POST -> `/user:id/post/add`)
+   - [ ] Register/Login Authentication (API: POST -> `/register`, POST > `/login`)
+   - [ ] User Create Posts (API: POST -> `/user:id/post/add`)
