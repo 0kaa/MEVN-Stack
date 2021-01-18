@@ -1,15 +1,27 @@
 <template>
   <v-row justify="center">
-    <Posts></Posts>
+    <create-post></create-post>
+    <posts
+      :posts="posts"
+      :nextPosts="`posts?page=${$store.state.posts.currentPage + 1}`"
+    ></posts>
   </v-row>
 </template>
 <script>
-import axios from "axios";
-import Posts from "../components/Posts";
+import CreatePost from "../components/CreatePost.vue";
 export default {
+  components: { CreatePost },
   name: "Home",
-  components: {
-    Posts
+
+  async fetch() {
+    const posts = await this.$axios.get(`/posts`).then(res => res.data);
+    this.posts = posts;
+    this.$store.commit("setPosts", this.posts);
+  },
+  data() {
+    return {
+      posts: []
+    };
   }
 };
 </script>

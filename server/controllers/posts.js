@@ -1,13 +1,29 @@
 import Post from "../models/post.js";
+import User from "../models/user.js";
 
 export const getPosts = async (req, res) => {
   try {
-    const { page = 1, limit = 6 } = req.query;
-    const posts = await Post.find()
-      .limit(limit * 1)
-      .skip((page - 1) * limit)
-      .exec();
-    const count = await Post.countDocuments();
+    const { page = 1, limit = 6, user = "" } = req.query;
+    var posts, count;
+    if (user) {
+      posts = await Post.find({
+        user
+      })
+        .limit(limit * 1)
+        .skip((page - 1) * limit)
+        .sort({ created_at: -1 })
+        .exec();
+      count = await Post.countDocuments({
+        user
+      });
+    } else {
+      posts = await Post.find()
+        .limit(limit * 1)
+        .skip((page - 1) * limit)
+        .sort({ created_at: -1 })
+        .exec();
+      count = await Post.countDocuments();
+    }
 
     res.status(200).json({
       posts,
@@ -19,8 +35,13 @@ export const getPosts = async (req, res) => {
     res.status(404).json({ message: error.message });
   }
 };
+
 export const createPost = async (req, res) => {
   const post = req.body;
+
+  let user = await User.findById(post.user);
+  post.user = user.username;
+  console.log(post);
   const newPost = new Post(post);
   if (post) {
     try {
@@ -31,5 +52,3 @@ export const createPost = async (req, res) => {
     }
   }
 };
-
-export const likePost = async (req, res) => {};

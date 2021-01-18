@@ -1,67 +1,41 @@
 <template>
-  <v-app dark>
-    <v-navigation-drawer v-model="drawer" fixed app>
-      <v-list>
-        <v-list-item
-          v-for="(item, i) in items"
-          :key="i"
-          :to="item.to"
-          router
-          exact
-        >
-          <v-list-item-action>
-            <v-icon>{{ item.icon }}</v-icon>
-          </v-list-item-action>
-          <v-list-item-content>
-            <v-list-item-title v-text="item.title" />
-          </v-list-item-content>
-        </v-list-item>
-      </v-list>
-    </v-navigation-drawer>
-    <v-app-bar :clipped-left="clipped" fixed app>
-      <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
-      <v-toolbar-title v-text="title" />
-      <v-spacer />
-      <CreatePost></CreatePost>
-    </v-app-bar>
+  <v-app>
+    <Navbar></Navbar>
     <v-main class="mt-5">
       <v-container>
-        <nuxt />
+        <nuxt keep-alive />
       </v-container>
     </v-main>
   </v-app>
 </template>
 
 <script>
-import CreatePost from "../components/CreatePost";
-
+import cookies from "js-cookie";
 export default {
   name: "Default",
-  components: {
-    CreatePost
+  activated() {
+    // Call fetch again if last fetch more than 30 sec ago
+    if (this.$fetchState.timestamp <= Date.now() - 30000) {
+      this.$fetch();
+    }
   },
-  data() {
-    return {
-      clipped: false,
-      drawer: false,
-      fixed: false,
-      items: [
-        {
-          icon: "mdi-apps",
-          title: "Welcome",
-          to: "/"
-        },
-        {
-          icon: "mdi-chart-bubble",
-          title: "Inspire",
-          to: "/inspire"
-        }
-      ],
-      miniVariant: false,
-      right: true,
-      rightDrawer: false,
-      title: "Vuetify.js"
-    };
+  async fetch() {
+    const token = cookies.get("x-access-token");
+    if (token) {
+      this.$store.commit("SET_TOKEN", token);
+      this.$axios
+        .get("profile", {
+          headers: {
+            token: token
+          }
+        })
+        .then(res => {
+          this.$store.commit("SET_USER", res.data);
+        })
+        .catch(err => {
+          this.$store.dispatch("logout");
+        });
+    }
   }
 };
 </script>

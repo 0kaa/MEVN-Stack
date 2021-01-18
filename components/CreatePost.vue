@@ -4,7 +4,7 @@
       <v-dialog v-model="dialog" max-width="600px">
         <template v-slot:activator="{ on, attrs }">
           <v-btn color="primary" text v-bind="attrs" v-on="on">
-            Create Post
+            Add New Post
           </v-btn>
         </template>
         <v-card>
@@ -62,6 +62,7 @@ export default {
       dialog: false,
       form: {
         author_name: "",
+        user: this.$store.state.user._id,
         created_at: new Date()
       },
       nameRules: [
@@ -83,7 +84,11 @@ export default {
     submitForm() {
       if (this.form.author_name) {
         this.$axios
-          .post("posts", this.form)
+          .post("posts", {
+            author_name: this.form.author_name,
+            user: this.$store.state.user._id,
+            created_at: new Date()
+          })
           .then(res => {
             console.log(res);
             this.$store.commit("pushPosts", res.data);
