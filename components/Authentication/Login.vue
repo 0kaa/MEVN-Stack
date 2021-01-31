@@ -1,67 +1,73 @@
 <template>
-  <div class="dialog-content blur">
-    <div
-      class="login modal-auth"
-      :class="$vuetify.theme.dark ? 'dark' : 'light'"
-    >
-      <div>
-        <v-spacer></v-spacer>
-        <v-btn elevation="20" x-small icon class="close-icon"
-          ><v-icon>mdi-close</v-icon></v-btn
+  <div>
+    <v-dialog v-model="$store.state.loginModal" persistent max-width="600px">
+      <v-card>
+        <v-form
+          v-model="valid"
+          @submit.prevent="login()"
+          ref="form"
+          lazy-validation
         >
-      </div>
-      <header>
-        <h1 class="text-center text-h5 mt-5 mb-5">Login Form</h1>
-      </header>
-      <v-form
-        v-model="valid"
-        @submit.prevent="login()"
-        ref="form"
-        lazy-validation
-      >
-        <v-text-field
-          label="Username"
-          v-model="username"
-          :rules="usernameRules"
-          outlined
-          dense
-          prepend-inner-icon="mdi-account-circle"
-          class="mb-3"
-          required
-        ></v-text-field>
-        <v-text-field
-          label="Password"
-          :type="showPassword ? 'text' : 'password'"
-          v-model="password"
-          outlined
-          dense
-          prepend-inner-icon="mdi-form-textbox-password"
-          class="mb-3"
-          :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
-          :rules="passwordRules"
-          @click:append="showPassword = !showPassword"
-          required
-        ></v-text-field>
-        <v-btn
-          type="submit"
-          block
-          color="primary"
-          :disabled="!valid"
-          elevation="0"
-          class="mb-5"
-          >Sign in</v-btn
+          <v-card-title class="justify-center">User Profile</v-card-title>
+          <v-card-text>
+            <v-container>
+              <v-row>
+                <v-col cols="12">
+                  <v-text-field
+                    label="Username"
+                    v-model="username"
+                    :rules="usernameRules"
+                    outlined
+                    prepend-inner-icon="mdi-account-circle"
+                    class="mb-3"
+                    required
+                  ></v-text-field>
+                </v-col>
+                <v-col cols="12">
+                  <v-text-field
+                    label="Password"
+                    :type="showPassword ? 'text' : 'password'"
+                    v-model="password"
+                    outlined
+                    prepend-inner-icon="mdi-form-textbox-password"
+                    class="mb-3"
+                    :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
+                    :rules="passwordRules"
+                    @click:append="showPassword = !showPassword"
+                    required
+                  ></v-text-field>
+                </v-col>
+              </v-row>
+            </v-container>
+          </v-card-text>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn
+              color="blue darken-1"
+              text
+              @click.prevent="$store.commit('toggleLoginModal', false)"
+              >Close
+            </v-btn>
+            <v-btn
+              type="submit"
+              color="primary"
+              text
+              :disabled="!valid"
+              elevation="0"
+              >Sign in</v-btn
+            >
+          </v-card-actions>
+        </v-form>
+      </v-card>
+    </v-dialog>
+    <v-snackbar v-model="snackbar" :timeout="timeout">
+      {{ snackbarText }}
+      <template v-slot:action="{ attrs }">
+        <v-btn color="red" text v-bind="attrs" @click="snackbar = false"
+          >Close</v-btn
         >
-      </v-form>
-      <v-snackbar v-model="snackbar" :timeout="timeout">
-        {{ snackbarText }}
-
-        <template v-slot:action="{ attrs }">
-          <v-btn color="red" text v-bind="attrs" @click="snackbar = false">
-            Close
-          </v-btn>
-        </template>
-      </v-snackbar>
-    </div>
+      </template>
+    </v-snackbar>
   </div>
 </template>
 
@@ -93,6 +99,7 @@ export default {
           .then(res => {
             this.$store.dispatch("setToken", res.data);
             this.clear();
+            this.$store.commit("toggleLoginModal", false);
             this.$router.push("/");
           })
           .catch(err => {

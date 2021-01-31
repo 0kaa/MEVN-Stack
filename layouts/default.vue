@@ -2,7 +2,7 @@
   <v-app>
     <Navbar></Navbar>
     <v-main class="mt-5">
-        <nuxt keep-alive />
+      <nuxt keep-alive />
     </v-main>
   </v-app>
 </template>

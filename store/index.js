@@ -3,7 +3,9 @@ import cookies from "js-cookie";
 export const state = () => ({
   posts: [],
   token: "",
-  user: []
+  user: [],
+  loginModal: false,
+  registerModal: false
 });
 
 export const mutations = {
@@ -31,6 +33,12 @@ export const mutations = {
     }
     state.posts.totalPages = data.totalPages;
     state.posts.currentPage = data.currentPage;
+  },
+  toggleLoginModal(state, val) {
+    state.loginModal = val;
+  },
+  toggleRegisterModal(state, val) {
+    state.registerModal = val;
   }
 };
 
@@ -47,6 +55,7 @@ export const actions = {
     this.$axios.setToken(false);
     cookies.remove("x-access-token");
     cookies.remove("username");
+    this.$router.push("/");
     commit("REMOVE_TOKEN");
     commit("SET_USER");
   }

@@ -62,8 +62,12 @@
         </v-menu>
       </div>
       <div class="logged-out" v-else>
-        <v-btn text @click.prevent="login = true">Login</v-btn>
-        <v-btn text @click.prevent="register = true">Register</v-btn>
+        <v-btn text @click.prevent="$store.commit('toggleLoginModal', true)"
+          >Login</v-btn
+        >
+        <v-btn text @click="$store.commit('toggleRegisterModal', true)"
+          >Register</v-btn
+        >
       </div>
       <v-btn rounded icon text @click="darkMode()">
         <v-icon v-if="!$vuetify.theme.dark"> mdi-weather-night </v-icon>
@@ -75,8 +79,8 @@
       >
       </v-app-bar-nav-icon>
     </v-toolbar>
-    <Login :dialog="login" v-if="login"></Login>
-    <Register v-if="register"></Register>
+    <Login v-if="$store.state.loginModal"></Login>
+    <Register v-if="$store.state.registerModal"></Register>
   </div>
 </template>
 
