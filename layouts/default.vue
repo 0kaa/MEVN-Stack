@@ -2,9 +2,7 @@
   <v-app>
     <Navbar></Navbar>
     <v-main class="mt-5">
-      <v-container>
         <nuxt keep-alive />
-      </v-container>
     </v-main>
   </v-app>
 </template>
@@ -15,7 +13,7 @@ export default {
   name: "Default",
   activated() {
     // Call fetch again if last fetch more than 30 sec ago
-    if (this.$fetchState.timestamp <= Date.now() - 30000) {
+    if (this.$fetchState.timestamp <= Date.now() - 10000) {
       this.$fetch();
     }
   },

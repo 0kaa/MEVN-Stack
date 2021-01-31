@@ -1,5 +1,5 @@
 <template>
-  <v-container>
+  <div class="register modal-auth">
     <h1 class="text-center mb-5">Register</h1>
     <v-form
       v-model="valid"
@@ -27,7 +27,7 @@
         :rules="passwordRules"
         required
       ></v-text-field>
-      <v-btn type="submit" color="primary" :disabled="!valid">Login</v-btn>
+      <v-btn type="submit" :disabled="!valid">Login</v-btn>
     </v-form>
     <v-snackbar shaped v-model="snackbar" :timeout="timeout">
       {{ snackbarText }}
@@ -38,7 +38,7 @@
         </v-btn>
       </template>
     </v-snackbar>
-  </v-container>
+  </div>
 </template>
 
 <script>
@@ -51,11 +51,11 @@ export default {
     timeout: 5000,
     valid: true,
     username: "",
-    usernameRules: [(v) => !!v || "username is required"],
+    usernameRules: [v => !!v || "username is required"],
     password: "",
-    passwordRules: [(v) => !!v || "password is required"],
+    passwordRules: [v => !!v || "password is required"],
     email: "",
-    emailRules: [(v) => !!v || "E-mail is required"],
+    emailRules: [v => !!v || "E-mail is required"]
   }),
 
   methods: {
@@ -65,14 +65,14 @@ export default {
           .post("signup", {
             username: this.username,
             email: this.email,
-            password: this.password,
+            password: this.password
           })
-          .then((res) => {
+          .then(res => {
             this.$store.dispatch("setToken", res.data);
             this.clear();
             this.$router.push("/");
           })
-          .catch((err) => {
+          .catch(err => {
             if (err) {
               this.snackbar = true;
               this.snackbarText = err.response.data.msg;
@@ -82,7 +82,7 @@ export default {
     },
     clear() {
       this.$refs.form.reset();
-    },
-  },
+    }
+  }
 };
 </script>

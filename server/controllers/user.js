@@ -16,12 +16,15 @@ export const getProfile = async (req, res) => {
 
 export const getUsers = async (req, res) => {
   try {
-    const email = req.query.email;
+    const username = req.query.user;
     const oneUser = await User.findOne({
-      email
-    });
-    const users = await User.find();
-    if (email) {
+      username
+    }).select("-password");
+
+    const users = await User.find().select("-password");
+
+    if (username) {
+      console.log(oneUser);
       res.status(201).json(oneUser);
     } else {
       res.status(201).json(users);

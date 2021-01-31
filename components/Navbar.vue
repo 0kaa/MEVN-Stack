@@ -31,6 +31,8 @@
       </v-toolbar-items>
 
       <v-spacer></v-spacer>
+
+      <create-post v-if="$store.state.token"></create-post>
       <div class="logged-in" v-if="$store.state.token">
         <v-menu
           open-on-hover
@@ -60,8 +62,8 @@
         </v-menu>
       </div>
       <div class="logged-out" v-else>
-        <v-btn text router to="/login">Login</v-btn>
-        <v-btn text router to="/register">Register</v-btn>
+        <v-btn text @click.prevent="login = true">Login</v-btn>
+        <v-btn text @click.prevent="register = true">Register</v-btn>
       </div>
       <v-btn rounded icon text @click="darkMode()">
         <v-icon v-if="!$vuetify.theme.dark"> mdi-weather-night </v-icon>
@@ -73,6 +75,8 @@
       >
       </v-app-bar-nav-icon>
     </v-toolbar>
+    <Login :dialog="login" v-if="login"></Login>
+    <Register v-if="register"></Register>
   </div>
 </template>
 
@@ -88,23 +92,10 @@ export default {
       localStorage.setItem("dark_theme", this.$vuetify.theme.dark.toString());
     }
   },
-  // created() {
-  //   const token = cookies.get("x-access-token");
-  //   if (token) {
-  //     this.$store.commit("SET_TOKEN", token);
-  //     this.$axios
-  //       .get("profile", {
-  //         headers: {
-  //           token: token
-  //         }
-  //       })
-  //       .then(res => {
-  //         this.$store.commit("SET_USER", res.data);
-  //       });
-  //   }
-  // },
   data() {
     return {
+      login: false,
+      register: false,
       drawer: false,
       offset: true,
       items: [

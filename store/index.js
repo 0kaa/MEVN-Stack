@@ -38,6 +38,7 @@ export const actions = {
   setToken({ commit }, token) {
     this.$axios.setToken(token.token, "Bearer");
     cookies.set("x-access-token", token.token);
+    cookies.set("username", token.userResponse.username);
     commit("SET_TOKEN", token.token);
     commit("SET_USER", token.userResponse);
   },
@@ -45,6 +46,7 @@ export const actions = {
   logout({ commit }) {
     this.$axios.setToken(false);
     cookies.remove("x-access-token");
+    cookies.remove("username");
     commit("REMOVE_TOKEN");
     commit("SET_USER");
   }
