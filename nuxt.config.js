@@ -41,7 +41,7 @@ export default {
 
   // Axios module configuration (https://go.nuxtjs.dev/config-axios)
   axios: {
-    baseURL: "https://project-server-side.herokuapp.com/"
+    baseURL: "http://127.0.0.1:5000"
   },
 
   // Vuetify module configuration (https://go.nuxtjs.dev/config-vuetify)

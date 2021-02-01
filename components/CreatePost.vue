@@ -26,6 +26,13 @@
                   required
                 ></v-text-field>
               </v-col>
+              <v-col cols="12">
+                <v-file-input
+                  @change="upload_avatar"
+                  accept="image/*"
+                  label="File input"
+                ></v-file-input>
+              </v-col>
             </v-row>
           </v-container>
         </v-form>
@@ -57,6 +64,7 @@ export default {
       dialog: false,
       form: {
         author_name: "",
+        image: "",
         user: this.$store.state.user._id,
         created_at: new Date()
       },
@@ -70,17 +78,33 @@ export default {
     setInterval(this.updateDate, 1000);
   },
   methods: {
+    upload_avatar(e) {
+      this.form.image = e;
+      console.log(e);
+    },
     updateDate() {
       this.form.created_at = new Date();
     },
     submitForm() {
+      const config = {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Authorization: `Bearer ${this.$store.state.token}`,
+          lang: this.$store.state.lang
+        }
+      };
+      const formData = new FormData();
+      //       image: this.form.image,
+      // title: this.form.author_name,
+      // user: this.$store.state.user._id,
+      // created_at: new Date()
+      formData.append("title", this.form.author_name);
+      formData.append("image", this.form.image);
+      formData.append("user", this.$store.state.user._id);
+      formData.append("created_at", new Date());
       if (this.form.author_name) {
         this.$axios
-          .post("posts", {
-            author_name: this.form.author_name,
-            user: this.$store.state.user._id,
-            created_at: new Date()
-          })
+          .post("products", formData, config)
           .then(res => {
             console.log(res);
             this.$store.commit("pushPosts", res.data);

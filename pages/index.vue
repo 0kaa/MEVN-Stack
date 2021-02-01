@@ -1,5 +1,6 @@
 <template>
   <div class="d-flex justify-center">
+    <h1></h1>
     <posts
       :posts="posts"
       :nextPosts="`posts?page=${$store.state.posts.currentPage + 1}`"
@@ -18,7 +19,7 @@ export default {
     }
   },
   async fetch() {
-    const posts = await this.$axios.get(`/posts`).then(res => res.data);
+    const posts = await this.$axios.get(`/products`).then(res => res.data);
     this.posts = posts;
     this.$store.commit("setPosts", this.posts);
   },

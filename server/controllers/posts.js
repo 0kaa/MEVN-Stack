@@ -8,14 +8,14 @@ export const getPosts = async (req, res) => {
     var posts, count;
     if (user) {
       posts = await Post.find({
-        user
+        user,
       })
         .limit(limit * 1)
         .skip((page - 1) * limit)
         .sort({ created_at: -1 })
         .exec();
       count = await Post.countDocuments({
-        user
+        user,
       });
     } else {
       posts = await Post.find()
@@ -30,7 +30,7 @@ export const getPosts = async (req, res) => {
       posts,
       totalPages: Math.ceil(count / limit),
       currentPage: parseInt(page),
-      allPosts: count
+      allPosts: count,
     });
   } catch (error) {
     res.status(404).json({ message: error.message });
@@ -85,12 +85,12 @@ export const ratingPost = async (req, res) => {
   const user = await User.findById(user_id);
   const userRating = {
     user: user.username,
-    rating
+    rating,
   };
 
   post.ratingByUser.push(userRating);
   post.ratings.push(rating);
-  
+
   const grades = post.ratings;
 
   function getAvg(grades) {

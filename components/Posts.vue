@@ -15,19 +15,31 @@
           <v-card class="mx-auto darken-5" elevation="0">
             <v-app-bar absolute flat color="transparent">
               <v-spacer></v-spacer>
+              <v-menu left offset-y min-width="200">
+                <template v-slot:activator="{ on, attrs }">
+                  <v-btn small icon v-bind="attrs" v-on="on">
+                    <v-icon>mdi-dots-horizontal</v-icon>
+                  </v-btn>
+                </template>
 
-              <v-btn color="white" small icon>
-                <v-icon>mdi-dots-horizontal</v-icon>
-              </v-btn>
+                <v-list>
+                  <v-list-item
+                    link
+                    dense
+                    @click.prevent="deleteProduct(post._id, i)"
+                  >
+                    <v-list-item-title>
+                      <v-icon>mdi-trash-can-outline</v-icon>
+                      Delete Item
+                    </v-list-item-title>
+                  </v-list-item>
+                </v-list>
+              </v-menu>
             </v-app-bar>
 
             <v-list-item class="grow">
               <v-list-item-avatar color="grey darken-3">
-                <v-img
-                  class="elevation-6"
-                  alt=""
-                  src="https://avataaars.io/?avatarStyle=Transparent&topType=ShortHairShortCurly&accessoriesType=Prescription02&hairColor=Black&facialHairType=Blank&clotheType=Hoodie&clotheColor=White&eyeType=Default&eyebrowType=DefaultNatural&mouthType=Default&skinColor=Light"
-                ></v-img>
+                <v-img class="elevation-6" alt="" :src="post.image"></v-img>
               </v-list-item-avatar>
 
               <v-list-item-content>
@@ -39,17 +51,8 @@
             </v-list-item>
 
             <v-card-text class="text--primary">
-              <div>{{ post.author_name }}</div>
+              <div>{{ post.title }}</div>
             </v-card-text>
-            <v-rating
-              v-model="post.avgRating"
-              readonly
-              length="5"
-              color="orange"
-              background-color="grey lighten-1"
-              hover
-              @input="setRatingPost($event, post._id)"
-            ></v-rating>
             <v-divider></v-divider>
             <v-card-actions class="grid">
               <v-btn
@@ -90,6 +93,21 @@ export default {
   name: "Posts",
   props: ["posts", "nextPosts"],
   methods: {
+    deleteProduct(id, index) {
+      this.$axios
+        .delete(
+          `/products/${id}`,
+          {},
+          {
+            headers: {
+              token: this.$store.state.token
+            }
+          }
+        )
+        .then(res => {
+          console.log(this.posts.posts[index]);
+        });
+    },
     setRatingPost(e, id) {
       this.$axios.post("/posts/rating", {
         user_id: this.$store.state.user._id,
