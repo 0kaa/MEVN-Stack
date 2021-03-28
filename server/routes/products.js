@@ -1,5 +1,5 @@
 import express from "express";
-import { getProducts, createProducts, deleteProduct } from "../controllers/products.js";
+import { getProducts, createProduct, deleteProduct } from "../controllers/products.js";
 import multer from "multer";
 const storage = multer.diskStorage({
   destination: function(req, file, cb) {
@@ -21,7 +21,7 @@ const upload = multer({ storage, limits: { fileSize: 1024 * 1024 * 5 }, fileFilt
 const router = express.Router();
 
 router.get("/", getProducts);
-router.post("/", upload.single("image"), createProducts);
+router.post("/", upload.single("image"), createProduct);
 router.delete("/:id", deleteProduct);
 
 export default router;

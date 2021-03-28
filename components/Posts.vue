@@ -1,6 +1,6 @@
 <template>
   <v-col cols="12" md="6">
-    <v-row v-if="!posts.posts">
+    <v-row v-if="!posts.products">
       <v-col cols="12" md="4" v-for="i in 6" :key="i">
         <v-skeleton-loader
           :loading="true"
@@ -10,9 +10,17 @@
       </v-col>
     </v-row>
     <v-row v-else>
-      <v-col cols="12" v-for="(post, i) in posts.posts" :key="post._id">
+      <v-col cols="12" v-if="!posts.products.length" class="text-center"
+        >No Products</v-col
+      >
+      <v-col
+        cols="12"
+        v-for="(post, i) in posts.products"
+        :key="post._id"
+        :id="post._id"
+      >
         <div class="post-items">
-          <v-card class="mx-auto darken-5" elevation="0">
+          <v-card class="mx-auto" elevation="0">
             <v-app-bar absolute flat color="transparent">
               <v-spacer></v-spacer>
               <v-menu left offset-y min-width="200">
@@ -24,13 +32,12 @@
 
                 <v-list>
                   <v-list-item
-                    link
                     dense
-                    @click.prevent="deleteProduct(post._id, i)"
+                    @click.prevent="deleteProduct(post._id, post)"
                   >
                     <v-list-item-title>
                       <v-icon>mdi-trash-can-outline</v-icon>
-                      Delete Item
+                      Delete
                     </v-list-item-title>
                   </v-list-item>
                 </v-list>
@@ -43,7 +50,7 @@
               </v-list-item-avatar>
 
               <v-list-item-content>
-                <v-list-item-title>{{ post.user }}</v-list-item-title>
+                <v-list-item-title>{{ post.user.name }}</v-list-item-title>
                 <v-list-item-subtitle>
                   {{ post.created_at | formatDate }}</v-list-item-subtitle
                 >
@@ -51,7 +58,7 @@
             </v-list-item>
 
             <v-card-text class="text--primary">
-              <div>{{ post.title }}</div>
+              <div class="product-content">{{ post.title }}</div>
             </v-card-text>
             <v-divider></v-divider>
             <v-card-actions class="grid">
@@ -86,6 +93,14 @@
     >
       <v-btn @click="loadMorePosts">Load More</v-btn>
     </v-row>
+    <v-snackbar v-model="snackbar" :timeout="timeout">
+      {{ snackbarText }}
+      <template v-slot:action="{ attrs }">
+        <v-btn color="red" text v-bind="attrs" @click="snackbar = false"
+          >Close</v-btn
+        >
+      </template>
+    </v-snackbar>
   </v-col>
 </template>
 <script>
@@ -93,7 +108,7 @@ export default {
   name: "Posts",
   props: ["posts", "nextPosts"],
   methods: {
-    deleteProduct(id, index) {
+    deleteProduct(id, product) {
       this.$axios
         .delete(
           `/products/${id}`,
@@ -105,7 +120,11 @@ export default {
           }
         )
         .then(res => {
-          console.log(this.posts.posts[index]);
+          const index = this.posts.products.indexOf(product);
+          this.$store.commit("deleteProduct", index);
+          this.snackbar = true;
+          this.snackbarText = `${product.title} ${res.data.message}`;
+          // this.posts = [];
         });
     },
     setRatingPost(e, id) {
@@ -131,7 +150,7 @@ export default {
             vote_type
           })
           .then(res => {
-            this.posts.posts[index].votes = res.data.votes;
+            this.posts.products[index].votes = res.data.votes;
             this.$store.commit("setPosts", this.posts);
           });
       }
@@ -140,6 +159,9 @@ export default {
   data() {
     return {
       loading: false,
+      snackbarText: "",
+      snackbar: false,
+      timeout: 5000,
       attrs: {
         elevation: 10
       }
@@ -152,5 +174,9 @@ export default {
   display: grid;
   grid-auto-flow: column;
   grid-column-gap: 20px;
+}
+.product-content {
+  text-align: start;
+  unicode-bidi: plaintext;
 }
 </style>

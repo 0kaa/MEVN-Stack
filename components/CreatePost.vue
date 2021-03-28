@@ -1,7 +1,7 @@
 <template>
   <v-dialog v-model="dialog" max-width="600px">
     <template v-slot:activator="{ on, attrs }">
-      <v-btn color="primary" text v-bind="attrs" v-on="on" class="mr-2">
+      <v-btn color="primary" v-bind="attrs" v-on="on" class="mr-2">
         Add New Post
       </v-btn>
     </template>
@@ -30,7 +30,10 @@
                 <v-file-input
                   @change="upload_avatar"
                   accept="image/*"
+                  required
+                  :rules="imageRules"
                   label="File input"
+                  show-size
                 ></v-file-input>
               </v-col>
             </v-row>
@@ -52,6 +55,14 @@
         </v-btn>
       </v-card-actions>
     </v-card>
+    <v-snackbar v-model="snackbar" :timeout="timeout">
+      {{ snackbarText }}
+      <template v-slot:action="{ attrs }">
+        <v-btn color="red" text v-bind="attrs" @click="snackbar = false"
+          >Close</v-btn
+        >
+      </template>
+    </v-snackbar>
   </v-dialog>
 </template>
 <script>
@@ -61,6 +72,9 @@ export default {
   data() {
     return {
       valid: true,
+      snackbarText: "",
+      snackbar: false,
+      timeout: 5000,
       dialog: false,
       form: {
         author_name: "",
@@ -68,7 +82,8 @@ export default {
         user: this.$store.state.user._id,
         created_at: new Date()
       },
-      nameRules: [v => !!v || "Name is required"]
+      nameRules: [v => !!v || "Name is required"],
+      imageRules: [v => (v && v.size > 0) || "File is required"]
     };
   },
   mounted() {
@@ -80,7 +95,6 @@ export default {
   methods: {
     upload_avatar(e) {
       this.form.image = e;
-      console.log(e);
     },
     updateDate() {
       this.form.created_at = new Date();
@@ -112,7 +126,11 @@ export default {
             this.dialog = false;
           })
           .catch(err => {
-            console.log(err);
+            console.log(err.response.data.message);
+            if (err) {
+              this.snackbar = true;
+              this.snackbarText = err.response.data.message;
+            }
           });
       } else {
         this.valid = false;

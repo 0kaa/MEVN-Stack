@@ -2,16 +2,30 @@ import express from "express";
 import bodyParser from "body-parser";
 import mongose from "mongoose";
 import cors from "cors";
+import { createRequire } from "module";
+const require = createRequire(import.meta.url);
 import postRoutes from "./routes/posts.js";
 import user from "./routes/user.js";
 import products from "./routes/products.js";
+
+const { graphqlHTTP } = require("express-graphql");
+
+import { schema } from "./graphql/graphql-schema.js";
 
 const app = express();
 app.use(bodyParser.json({ limit: "30mb", extended: true }));
 app.use(bodyParser.urlencoded({ limit: "30mb", extended: true }));
 app.use(cors());
-app.use("/posts", postRoutes);
-app.use("/", user);
+app.use(
+  "/graphql",
+  cors(),
+  graphqlHTTP({
+    schema,
+    graphiql: true,
+  })
+);
+// app.use("/posts", postRoutes);
+// app.use("/", user);
 app.use("/products", products);
 app.use("/uploads", express.static("uploads"));
 
