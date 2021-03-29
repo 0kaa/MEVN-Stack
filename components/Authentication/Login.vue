@@ -8,54 +8,57 @@
           ref="form"
           lazy-validation
         >
-          <v-card-title class="justify-center">User Profile</v-card-title>
+          <v-card-title class="justify-center mb-8">تسجيل دخول</v-card-title>
           <v-card-text>
-            <v-container>
-              <v-row>
-                <v-col cols="12">
-                  <v-text-field
-                    label="Username"
-                    v-model="username"
-                    :rules="usernameRules"
-                    outlined
-                    prepend-inner-icon="mdi-account-circle"
-                    class="mb-3"
-                    required
-                  ></v-text-field>
-                </v-col>
-                <v-col cols="12">
-                  <v-text-field
-                    label="Password"
-                    :type="showPassword ? 'text' : 'password'"
-                    v-model="password"
-                    outlined
-                    prepend-inner-icon="mdi-form-textbox-password"
-                    class="mb-3"
-                    :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
-                    :rules="passwordRules"
-                    @click:append="showPassword = !showPassword"
-                    required
-                  ></v-text-field>
-                </v-col>
-              </v-row>
-            </v-container>
+            <v-text-field
+              label="اسم المستخدم"
+              v-model="username"
+              :rules="usernameRules"
+              outlined
+              class="mb-8"
+              hide-details
+              prepend-inner-icon="mdi-account-circle"
+              required
+            ></v-text-field>
+
+            <v-text-field
+              label="كلمة المرور"
+              :type="showPassword ? 'text' : 'password'"
+              v-model="password"
+              outlined
+              class="mb-8"
+              hide-details
+              prepend-inner-icon="mdi-form-textbox-password"
+              :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
+              :rules="passwordRules"
+              @click:append="showPassword = !showPassword"
+              required
+            ></v-text-field>
+
+            <v-btn
+              color="primary"
+              text
+              @click.prevent="
+                $store.commit('toggleLoginModal', false);
+                $store.commit('toggleRegisterModal', true);
+              "
+              >ليس لديك حساب؟</v-btn
+            >
           </v-card-text>
           <v-card-actions>
-            <v-spacer></v-spacer>
-            <v-btn
-              color="blue darken-1"
-              text
-              @click.prevent="$store.commit('toggleLoginModal', false)"
-              >Close
-            </v-btn>
             <v-btn
               type="submit"
               color="primary"
-              text
               :disabled="!valid"
               elevation="0"
-              >Sign in</v-btn
+              >دخول</v-btn
             >
+            <v-btn
+              color="primary"
+              text
+              @click.prevent="$store.commit('toggleLoginModal', false)"
+              >اغلاق
+            </v-btn>
           </v-card-actions>
         </v-form>
       </v-card>

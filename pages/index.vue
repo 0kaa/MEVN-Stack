@@ -1,7 +1,6 @@
 <template>
   <div class="d-flex justify-center">
-    <Slider></Slider>
-    <!-- <h1>مرحبا</h1> -->
+    <!-- <Slider></Slider> -->
   </div>
 </template>
 <script>

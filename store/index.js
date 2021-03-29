@@ -1,15 +1,17 @@
 import cookies from "js-cookie";
 
 export const state = () => ({
-  posts: [],
   token: "",
   user: [],
   loginModal: false,
   registerModal: false,
-  searchModal: false
+  categories: []
 });
 
 export const mutations = {
+  FETCH_ITEMS(state, categories) {
+    state.categories = categories
+  },
   SET_TOKEN(state, data) {
     state.token = data;
   },
@@ -25,33 +27,20 @@ export const mutations = {
   setPosts(state, data) {
     state.posts = data;
   },
-  pushPosts(state, data) {
-    state.posts.products.unshift(data);
-    state.posts.allPosts = state.posts.products.length;
-    state.posts.totalPages = Math.ceil(state.posts.products.length / 6);
-  },
-  loadMorePosts(state, data) {
-    for (let i = 0; i <= data.posts.length - 1; i++) {
-      state.posts.products.push(data.posts[i]);
-    }
-    state.posts.totalPages = data.totalPages;
-    state.posts.currentPage = data.currentPage;
-  },
-  deleteProduct(state, index) {
-    state.posts.products.splice(index, 1);
-  },
   toggleLoginModal(state, val) {
     state.loginModal = val;
   },
   toggleRegisterModal(state, val) {
     state.registerModal = val;
   },
-  toggleSearchModal(state, val) {
-    state.searchModal = val;
-  }
 };
 
 export const actions = {
+  fetchItems({ commit }) {
+    this.$axios.get('/categories').then(res => {
+      commit("FETCH_ITEMS", res.data.categories);
+    })
+  },
   setToken({ commit }, token) {
     this.$axios.setToken(token.token, "Bearer");
     cookies.set("x-access-token", token.token);
