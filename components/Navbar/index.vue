@@ -1,75 +1,94 @@
 <template>
   <div>
-    <v-card>
-      <v-container>
-        <div
-          class="top-nav mb-4 d-flex align-center justify-space-between flex-wrap"
-        >
-          <div class="d-flex align-center">
-            <nuxt-link
-              to="/"
-              exact-active-class
-              exact
-              class="logo text--primary ml-5"
-            >
-              <h3 class="logo-brand">الشعار</h3>
-            </nuxt-link>
-            <!-- <v-btn @click="darkMode">dark</v-btn> -->
-            <search></search>
-          </div>
-          <div class="sign">
-            <div class="logged-in" v-if="$store.state.token">
-              <v-menu
-                open-on-hover
-                offset-y
-                bottom
-                transition="slide-y-transition"
-                rounded="0"
-              >
-                <template v-slot:activator="{ on, attrs }">
-                  <v-btn text v-bind="attrs" v-on="on">
-                    {{ $store.state.user.username }}
-                  </v-btn>
-                </template>
+    <v-toolbar elevation="0">
+      <!-- <nuxt-link to="/" exact-active-class exact class="logo text--primary">
+        <img src="/img/svg/logo.svg" alt="logo" />
 
-                <v-list>
-                  <v-list-item>
-                    <v-list-item-title>
-                      <v-btn text router to="/profile">Settings</v-btn>
-                    </v-list-item-title>
-                  </v-list-item>
-                  <v-list-item>
-                    <v-list-item-title>
-                      <v-btn text @click="logout">Log Out</v-btn>
-                    </v-list-item-title>
-                  </v-list-item>
-                </v-list>
-              </v-menu>
-            </div>
-            <div class="logged-out" v-else>
+        <h3 class="logo-brand">
+          <span class="logo-name">{{ LogoName }}</span>
+          <span class="logo-description">{{ LogoDescription }}</span>
+        </h3>
+      </nuxt-link> -->
+      <nuxt-link
+        to="/"
+        exact-active-class
+        exact
+        class="logo text--primary ml-5"
+      >
+        <h3 class="logo-brand">الشعار</h3>
+      </nuxt-link>
+
+      <v-spacer></v-spacer>
+
+      <div class="hidden-sm-only hidden-xs-only search-section">
+        <!-- <v-btn nuxt text depressed to="/profile">الرئيسية</v-btn> -->
+        <search></search>
+      </div>
+
+      <v-spacer></v-spacer>
+      <div class="sign">
+        <div class="logged-in" v-if="$store.state.token">
+          <v-menu
+            open-on-hover
+            offset-y
+            bottom
+            transition="slide-y-transition"
+            rounded="0"
+          >
+            <template v-slot:activator="{ on, attrs }">
               <v-btn
-                text
-                color="primary"
-                @click.prevent="$store.commit('toggleLoginModal', true)"
-                >تسجيل دخول</v-btn
+                fab
+                icon
+                v-bind="attrs"
+                v-on="on"
+                small
+                class="overflow-hidden ml-4"
               >
-              <v-btn tile color="primary">اضافة اعلان</v-btn>
-            </div>
-          </div>
+                <v-img
+                  v-if="$store.state.user.image"
+                  :src="$store.state.user.image"
+                  alt="user profile"
+                  class="user-profile"
+                />
+                <v-img
+                  v-else
+                  src="/v.png"
+                  alt="user profile"
+                  class="user-profile"
+                />
+              </v-btn>
+            </template>
+
+            <v-list>
+              <v-list-item link to="/profile">
+                <v-list-item-title>
+                  الصفحة الشخصية
+                </v-list-item-title>
+              </v-list-item>
+              <v-list-item @click="logout">
+                <v-list-item-title class="primary--text">
+                  تسجيل خروج
+                </v-list-item-title>
+              </v-list-item>
+            </v-list>
+          </v-menu>
+          <v-btn color="primary">اضافة اعلان</v-btn>
         </div>
-        <div class="bottom-nav">
-          <ul class="d-flex">
-            <li
-              v-for="category in $store.state.categories"
-              :key="category._id"
-              class="ml-8"
-            >
-              {{ category.title }}
-            </li>
-          </ul>
+        <div class="logged-out" v-else>
+          <v-btn
+            text
+            color="primary"
+            @click.prevent="$store.commit('toggleLoginModal', true)"
+            >تسجيل دخول</v-btn
+          >
+          <v-btn color="primary">اضافة اعلان</v-btn>
         </div>
-      </v-container>
-    </v-card>
+      </div>
+      <v-btn rounded icon text @click="darkMode()">
+        <v-icon v-if="!$vuetify.theme.dark"> mdi-weather-night </v-icon>
+        <v-icon v-else> mdi-white-balance-sunny </v-icon>
+      </v-btn>
+    </v-toolbar>
     <Login v-if="$store.state.loginModal"></Login>
     <Register v-if="$store.state.registerModal"></Register>
   </div>

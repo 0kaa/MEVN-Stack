@@ -1,48 +1,60 @@
 @font-face {
-  font-family: 'Montserrat-Arabic';
-  src: url('./fonts/Montserrat-Arabic-Light.woff2') format('woff2'),
-    url('./fonts/Montserrat-Arabic-Light.woff') format('woff'),
-    url('./fonts/Montserrat-Arabic-Light.ttf') format('truetype');
+  font-family: "Montserrat-Arabic";
+  src: url("./fonts/Montserrat-Arabic-Light.woff2") format("woff2"),
+    url("./fonts/Montserrat-Arabic-Light.woff") format("woff"),
+    url("./fonts/Montserrat-Arabic-Light.ttf") format("truetype");
   font-weight: 300;
 }
 
 @font-face {
-  font-family: 'Montserrat-Arabic';
-  src: url('./fonts/Montserrat-Arabic-Regular.woff2') format('woff2'),
-    url('./fonts/Montserrat-Arabic-Regular.woff') format('woff'),
-    url('./fonts/Montserrat-Arabic-Regular.ttf') format('truetype');
+  font-family: "Montserrat-Arabic";
+  src: url("./fonts/Montserrat-Arabic-Regular.woff2") format("woff2"),
+    url("./fonts/Montserrat-Arabic-Regular.woff") format("woff"),
+    url("./fonts/Montserrat-Arabic-Regular.ttf") format("truetype");
   font-weight: 400;
 }
 
 @font-face {
-  font-family: 'Montserrat-Arabic';
-  src: url('./fonts/Montserrat-Arabic-Medium.woff2') format('woff2'),
-    url('./fonts/Montserrat-Arabic-Medium.woff') format('woff'),
-    url('./fonts/Montserrat-Arabic-Medium.ttf') format('truetype');
+  font-family: "Montserrat-Arabic";
+  src: url("./fonts/Montserrat-Arabic-Medium.woff2") format("woff2"),
+    url("./fonts/Montserrat-Arabic-Medium.woff") format("woff"),
+    url("./fonts/Montserrat-Arabic-Medium.ttf") format("truetype");
   font-weight: 500;
 }
 
 @font-face {
-  font-family: 'Montserrat-Arabic';
-  src: url('./fonts/Montserrat-Arabic-SemiBold.woff2') format('woff2'),
-    url('./fonts/Montserrat-Arabic-SemiBold.woff') format('woff'),
-    url('./fonts/Montserrat-Arabic-SemiBold.ttf') format('truetype');
+  font-family: "Montserrat-Arabic";
+  src: url("./fonts/Montserrat-Arabic-SemiBold.woff2") format("woff2"),
+    url("./fonts/Montserrat-Arabic-SemiBold.woff") format("woff"),
+    url("./fonts/Montserrat-Arabic-SemiBold.ttf") format("truetype");
   font-weight: 600;
 }
 
 @font-face {
-  font-family: 'Montserrat-Arabic';
-  src: url('./fonts/Montserrat-Arabic-Bold.woff2') format('woff2'),
-    url('./fonts/Montserrat-Arabic-Bold.woff') format('woff'),
-    url('./fonts/Montserrat-Arabic-Bold.ttf') format('truetype');
+  font-family: "Montserrat-Arabic";
+  src: url("./fonts/Montserrat-Arabic-Bold.woff2") format("woff2"),
+    url("./fonts/Montserrat-Arabic-Bold.woff") format("woff"),
+    url("./fonts/Montserrat-Arabic-Bold.ttf") format("truetype");
   font-weight: bold;
 }
 
 .v-application,
 body,
 .v-application .title {
-  font-family: 'Montserrat-Arabic' !important;
+  font-family: "Montserrat-Arabic" !important;
   font-weight: 400;
+}
+
+.theme--light .main-content {
+  background-color: #f7f8fc !important;
+}
+
+.v-input {
+  font-size: 13px !important;
+}
+.v-select__selection,
+.v-select__selection--comma {
+  font-size: 11px !important;
 }
 
 .v-application--is-rtl {
@@ -107,8 +119,6 @@ ul {
 .position-relative {
   position: relative;
 }
-
-
 
 .dir-ltr {
   direction: ltr;

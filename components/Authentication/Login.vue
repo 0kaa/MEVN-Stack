@@ -11,12 +11,10 @@
           <v-card-title class="justify-center mb-8">تسجيل دخول</v-card-title>
           <v-card-text>
             <v-text-field
-              label="اسم المستخدم"
-              v-model="username"
-              :rules="usernameRules"
+              label="البريد الالكتروني"
+              v-model="email"
+              :rules="emailRules"
               outlined
-              class="mb-8"
-              hide-details
               prepend-inner-icon="mdi-account-circle"
               required
             ></v-text-field>
@@ -25,9 +23,8 @@
               label="كلمة المرور"
               :type="showPassword ? 'text' : 'password'"
               v-model="password"
+              class="mb-2"
               outlined
-              class="mb-8"
-              hide-details
               prepend-inner-icon="mdi-form-textbox-password"
               :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
               :rules="passwordRules"
@@ -67,7 +64,7 @@
       {{ snackbarText }}
       <template v-slot:action="{ attrs }">
         <v-btn color="red" text v-bind="attrs" @click="snackbar = false"
-          >Close</v-btn
+          >اغلاق</v-btn
         >
       </template>
     </v-snackbar>
@@ -86,9 +83,9 @@ export default {
     showPassword: false,
     snackbarText: "",
     password: "",
-    passwordRules: [v => !!v || "Password is required"],
-    username: "",
-    usernameRules: [v => !!v || "Username is required"]
+    passwordRules: [v => !!v || "كلمة المرور مطلوبة"],
+    email: "",
+    emailRules: [v => !!v || "البريد الالكتروني مطلوب"]
   }),
 
   methods: {
@@ -96,7 +93,7 @@ export default {
       if (this.$refs.form.validate()) {
         this.$axios
           .post("login", {
-            username: this.username,
+            email: this.email,
             password: this.password
           })
           .then(res => {
@@ -108,7 +105,7 @@ export default {
           .catch(err => {
             if (err) {
               this.snackbar = true;
-              this.snackbarText = err.response.data.msg;
+              this.snackbarText = err.response.data.message;
             }
           });
       }
@@ -119,3 +116,9 @@ export default {
   }
 };
 </script>
+
+<style lang="scss">
+.v-text-field .v-label {
+  font-size: 12px !important;
+}
+</style>

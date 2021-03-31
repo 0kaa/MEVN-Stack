@@ -16,7 +16,7 @@
               label="اسم المستخدم"
               class="mb-8"
               hide-details
-              v-model="username"
+              v-model="form.username"
               :rules="usernameRules"
               required
               placeholder=" "
@@ -28,10 +28,21 @@
               hide-details
               prepend-inner-icon="mdi-email"
               label="البريد الالكتروني"
-              v-model="email"
+              v-model="form.email"
               :rules="emailRules"
               required
             ></v-text-field>
+
+            <v-file-input
+              @change="upload_avatar"
+              accept="image/*"
+              required
+              outlined
+              prepend-inner-icon="mdi-email"
+              :rules="imageRules"
+              label="صورة المستخدم"
+              show-size
+            ></v-file-input>
 
             <v-text-field
               :type="showPassword ? 'text' : 'password'"
@@ -42,7 +53,7 @@
               label="كلمة المرور"
               class="mb-8"
               hide-details
-              v-model="password"
+              v-model="form.password"
               :rules="passwordRules"
               required
             ></v-text-field>
@@ -75,37 +86,58 @@
         </v-form>
       </v-card>
     </v-dialog>
+    <v-snackbar v-model="snackbar" :timeout="timeout">
+      {{ snackbarText }}
+      <template v-slot:action="{ attrs }">
+        <v-btn color="red" text v-bind="attrs" @click="snackbar = false"
+          >اغلاق</v-btn
+        >
+      </template>
+    </v-snackbar>
   </div>
 </template>
 
 <script>
-import axios from "axios";
-
 export default {
   data: () => ({
+    form: {
+      username: "",
+      password: "",
+      email: "",
+      image: ""
+    },
     snackbar: false,
     snackbarText: "",
     showPassword: false,
-
+    imageRules: [v => (v && v.size > 0) || "File is required"],
     timeout: 5000,
     valid: true,
-    username: "",
     usernameRules: [v => !!v || "username is required"],
-    password: "",
     passwordRules: [v => !!v || "password is required"],
-    email: "",
     emailRules: [v => !!v || "E-mail is required"]
   }),
 
   methods: {
+    upload_avatar(e) {
+      this.form.image = e;
+    },
     register() {
+      const config = {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Authorization: `Bearer ${this.$store.state.token}`,
+          lang: this.$store.state.lang
+        }
+      };
+      const formData = new FormData();
+
+      formData.append("username", this.form.username);
+      formData.append("password", this.form.password);
+      formData.append("email", this.form.email);
+      formData.append("image", this.form.image);
       if (this.$refs.form.validate()) {
         this.$axios
-          .post("signup", {
-            username: this.username,
-            email: this.email,
-            password: this.password
-          })
+          .post("signup", formData)
           .then(res => {
             this.$store.dispatch("setToken", res.data);
             this.clear();
@@ -115,7 +147,7 @@ export default {
           .catch(err => {
             if (err) {
               this.snackbar = true;
-              this.snackbarText = err.response.data.msg;
+              this.snackbarText = err.response.data.message;
             }
           });
       }

@@ -1,6 +1,6 @@
 <template>
   <div class="search">
-    <div class="d-flex align-center">
+    <div class="d-flex align-center" style="height:42px;">
       <div class="h-search">
         <div class="d-flex align-center">
           <div class="search-input-text">
@@ -23,18 +23,22 @@
               flat
               background-color="transparent"
               solo
+              clearable
               dense
+              placeholder="كل الاقسام"
               :menu-props="{ offsetY: true }"
-              :items="items"
+              :items="$store.state.categories"
+              item-text="title"
+              item-value="_id"
               v-model="select"
               no-data-text="لا يوجد بيانات حالية"
               hide-details
-              required
-            ></v-select>
+            >
+            </v-select>
           </div>
         </div>
       </div>
-      <v-btn height="50" tile color="primary">
+      <v-btn height="100%" color="primary">
         <v-icon>mdi-search-web</v-icon>
       </v-btn>
     </div>
@@ -62,14 +66,28 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .search {
   flex-basis: 510px;
 }
+.theme--light {
+  .h-search {
+    .border {
+      background: rgba($color: #000000, $alpha: 0.1);
+    }
+  }
+}
+.theme--dark {
+  .h-search {
+    background: rgba($color: #121212, $alpha: 0.3);
+    .border {
+      background: #12121247;
+    }
+  }
+}
 .h-search {
-  border: 1px solid #dedede;
-  padding: 4px 0;
-  box-shadow: 0 0 6px hsl(0deg 0% 0% / 16%);
+  background: rgba($color: #000000, $alpha: 0.06);
+  height: 100%;
   display: flex;
   align-items: center;
   .search-input-text {
@@ -80,10 +98,12 @@ export default {
     flex-basis: 2px;
     min-height: 30px;
     max-height: 30px;
-    background: #cccccc;
   }
   .search-input-select {
     flex-basis: 180px;
+    .v-input {
+      font-size: 12px;
+    }
   }
 }
 </style>

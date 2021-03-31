@@ -41,18 +41,27 @@ export const actions = {
       commit("FETCH_ITEMS", res.data.categories);
     })
   },
+  getProfile({ commit }, token) {
+    this.$axios.get("profile", {
+      headers: {
+        token: cookies.get('token')
+      }
+    }).then(res => {
+
+      console.log(res.data)
+    })
+  },
+
   setToken({ commit }, token) {
     this.$axios.setToken(token.token, "Bearer");
-    cookies.set("x-access-token", token.token);
-    cookies.set("username", token.userResponse.username);
+    cookies.set("token", token.token);
     commit("SET_TOKEN", token.token);
     commit("SET_USER", token.userResponse);
   },
 
   logout({ commit }) {
     this.$axios.setToken(false);
-    cookies.remove("x-access-token");
-    cookies.remove("username");
+    cookies.remove("token");
     this.$router.push("/");
     commit("REMOVE_TOKEN");
     commit("SET_USER");
