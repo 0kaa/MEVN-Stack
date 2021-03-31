@@ -1,10 +1,11 @@
 <template>
   <div class="d-flex justify-center">
-    <h1>{{ user[0].title }}</h1>
+    <h1>{{ $auth.state.user.username }}</h1>
   </div>
 </template>
 <script>
 export default {
+  middleware: "auth",
   data: () => ({
     user: ""
   }),

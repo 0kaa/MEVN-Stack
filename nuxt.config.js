@@ -51,16 +51,17 @@ export default {
         token: {
           property: 'token',
           // required: true,
-          // type: 'Bearer'
+          type: false
         },
         user: {
           property: 'user',
-          // autoFetch: true
+          autoFetch: true
         },
         endpoints: {
-          login: { url: '/api/auth/login', method: 'post' },
-          logout: { url: '/api/auth/logout', method: 'post' },
-          user: { url: '/api/auth/user', method: 'get' }
+          login: { url: '/login', method: 'post' },
+          register: { url: '/signup', method: 'post' },
+          logout: { url: '/logout', method: 'post' },
+          user: { url: '/profile', method: 'get' }
         }
       }
     }
@@ -96,5 +97,5 @@ export default {
   },
 
   // Build Configuration (https://go.nuxtjs.dev/config-build)
-  build: { extractCSS: true, extend(config, ctx) { } }
+  build: { extend(config, ctx) { } }
 };

@@ -52,6 +52,7 @@ body,
 .v-input {
   font-size: 13px !important;
 }
+
 .v-select__selection,
 .v-select__selection--comma {
   font-size: 11px !important;
@@ -65,8 +66,12 @@ body {
   font-weight: 300;
 }
 
-.v-btn {
-  letter-spacing: normal;
+* {
+  letter-spacing: normal !important;
+}
+
+.w-auto {
+  width: auto !important;
 }
 
 .v-menu__content .v-list-item__title {

@@ -4,7 +4,7 @@
       <v-card>
         <v-form
           v-model="valid"
-          @submit.prevent="login()"
+          @submit.prevent="userLogin()"
           ref="form"
           lazy-validation
         >
@@ -12,7 +12,7 @@
           <v-card-text>
             <v-text-field
               label="البريد الالكتروني"
-              v-model="email"
+              v-model="login.email"
               :rules="emailRules"
               outlined
               prepend-inner-icon="mdi-account-circle"
@@ -22,7 +22,7 @@
             <v-text-field
               label="كلمة المرور"
               :type="showPassword ? 'text' : 'password'"
-              v-model="password"
+              v-model="login.password"
               class="mb-2"
               outlined
               prepend-inner-icon="mdi-form-textbox-password"
@@ -82,34 +82,50 @@ export default {
     timeout: 5000,
     showPassword: false,
     snackbarText: "",
-    password: "",
+    login: {
+      email: "",
+      password: ""
+    },
     passwordRules: [v => !!v || "كلمة المرور مطلوبة"],
-    email: "",
     emailRules: [v => !!v || "البريد الالكتروني مطلوب"]
   }),
 
   methods: {
-    login() {
-      if (this.$refs.form.validate()) {
-        this.$axios
-          .post("login", {
-            email: this.email,
-            password: this.password
-          })
-          .then(res => {
-            this.$store.dispatch("setToken", res.data);
-            this.clear();
-            this.$store.commit("toggleLoginModal", false);
-            this.$router.push("/");
-          })
-          .catch(err => {
-            if (err) {
-              this.snackbar = true;
-              this.snackbarText = err.response.data.message;
-            }
+    async userLogin() {
+      try {
+        if (this.$refs.form.validate()) {
+          let response = await this.$auth.loginWith("local", {
+            data: this.login
           });
+          console.log(response);
+          this.clear();
+          this.$store.commit("toggleLoginModal", false);
+        }
+      } catch (err) {
+        console.log(err);
       }
     },
+    // login() {
+    //   if (this.$refs.form.validate()) {
+    //     this.$axios
+    //       .post("login", {
+    //         email: this.email,
+    //         password: this.password
+    //       })
+    //       .then(res => {
+    //         this.$store.dispatch("setToken", res.data);
+    //         this.clear();
+    //         this.$store.commit("toggleLoginModal", false);
+    //         this.$router.push("/");
+    //       })
+    //       .catch(err => {
+    //         if (err) {
+    //           this.snackbar = true;
+    //           this.snackbarText = err.response.data.message;
+    //         }
+    //       });
+    //   }
+    // },
     clear() {
       this.$refs.form.reset();
     }

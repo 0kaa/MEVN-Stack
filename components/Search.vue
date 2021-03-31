@@ -39,7 +39,7 @@
         </div>
       </div>
       <v-btn height="100%" color="primary">
-        <v-icon>mdi-search-web</v-icon>
+        <v-icon>mdi-magnify</v-icon>
       </v-btn>
     </div>
   </div>

@@ -121,35 +121,37 @@ export default {
     upload_avatar(e) {
       this.form.image = e;
     },
-    register() {
-      const config = {
-        headers: {
-          "Content-Type": "multipart/form-data",
-          Authorization: `Bearer ${this.$store.state.token}`,
-          lang: this.$store.state.lang
-        }
-      };
-      const formData = new FormData();
+    async register() {
+      try {
+        const config = {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization: `Bearer ${this.$store.state.token}`,
+            lang: this.$store.state.lang
+          }
+        };
+        const formData = new FormData();
 
-      formData.append("username", this.form.username);
-      formData.append("password", this.form.password);
-      formData.append("email", this.form.email);
-      formData.append("image", this.form.image);
-      if (this.$refs.form.validate()) {
-        this.$axios
-          .post("signup", formData)
-          .then(res => {
-            this.$store.dispatch("setToken", res.data);
-            this.clear();
-            this.$store.commit("toggleRegisterModal", false);
-            this.$router.push("/");
-          })
-          .catch(err => {
-            if (err) {
-              this.snackbar = true;
-              this.snackbarText = err.response.data.message;
+        formData.append("username", this.form.username);
+        formData.append("password", this.form.password);
+        formData.append("email", this.form.email);
+        formData.append("image", this.form.image);
+
+        if (this.$refs.form.validate()) {
+          await this.$axios.post("/signup", formData);
+          await this.$auth.loginWith("local", {
+            data: {
+              email: this.form.email,
+              password: this.form.password
             }
           });
+          this.clear();
+          this.$store.commit("toggleRegisterModal", false);
+          this.$router.push("/");
+        }
+      } catch (err) {
+        this.snackbar = true;
+        this.snackbarText = err;
       }
     },
     clear() {

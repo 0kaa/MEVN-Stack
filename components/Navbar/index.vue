@@ -27,7 +27,7 @@
 
       <v-spacer></v-spacer>
       <div class="sign">
-        <div class="logged-in" v-if="$store.state.token">
+        <div class="logged-in" v-if="$auth.$state.loggedIn">
           <v-menu
             open-on-hover
             offset-y
@@ -45,8 +45,8 @@
                 class="overflow-hidden ml-4"
               >
                 <v-img
-                  v-if="$store.state.user.image"
-                  :src="$store.state.user.image"
+                  v-if="$auth.user.image"
+                  :src="$auth.user.image"
                   alt="user profile"
                   class="user-profile"
                 />
@@ -65,7 +65,7 @@
                   الصفحة الشخصية
                 </v-list-item-title>
               </v-list-item>
-              <v-list-item @click="logout">
+              <v-list-item @click="$auth.logout()">
                 <v-list-item-title class="primary--text">
                   تسجيل خروج
                 </v-list-item-title>
