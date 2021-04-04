@@ -81,12 +81,12 @@ export default {
   .h-search {
     background: rgba($color: #121212, $alpha: 0.3);
     .border {
-      background: #12121247;
+      background: rgba($color: #fff, $alpha: 0.15);
     }
   }
 }
 .h-search {
-  background: rgba($color: #000000, $alpha: 0.06);
+  background: #f7f8fc;
   height: 100%;
   display: flex;
   align-items: center;
