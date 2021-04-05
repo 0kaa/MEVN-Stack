@@ -1,65 +1,52 @@
 <template>
   <div>
-    <v-dialog v-model="$store.state.loginModal" persistent max-width="600px">
-      <v-card>
-        <v-form
-          v-model="valid"
-          @submit.prevent="userLogin()"
-          ref="form"
-          lazy-validation
-        >
-          <v-card-title class="justify-center mb-8">تسجيل دخول</v-card-title>
-          <v-card-text>
-            <v-text-field
-              label="البريد الالكتروني"
-              v-model="login.email"
-              :rules="emailRules"
-              outlined
-              prepend-inner-icon="mdi-account-circle"
-              required
-            ></v-text-field>
+    <v-card max-width="600" class="mx-auto" color="transparent" elevation="0">
+      <v-form
+        v-model="valid"
+        @submit.prevent="userLogin()"
+        ref="form"
+        lazy-validation
+      >
+        <v-card-title class="justify-center mb-8">تسجيل دخول</v-card-title>
+        <v-card-text>
+          <v-text-field
+            label="البريد الالكتروني"
+            v-model="login.email"
+            :rules="emailRules"
+            outlined
+            prepend-inner-icon="mdi-account-circle"
+            required
+          ></v-text-field>
 
-            <v-text-field
-              label="كلمة المرور"
-              :type="showPassword ? 'text' : 'password'"
-              v-model="login.password"
-              class="mb-2"
-              outlined
-              prepend-inner-icon="mdi-form-textbox-password"
-              :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
-              :rules="passwordRules"
-              @click:append="showPassword = !showPassword"
-              required
-            ></v-text-field>
+          <v-text-field
+            label="كلمة المرور"
+            :type="showPassword ? 'text' : 'password'"
+            v-model="login.password"
+            class="mb-2"
+            outlined
+            prepend-inner-icon="mdi-form-textbox-password"
+            :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
+            :rules="passwordRules"
+            @click:append="showPassword = !showPassword"
+            required
+          ></v-text-field>
 
-            <v-btn
-              color="primary"
-              text
-              @click.prevent="
-                $store.commit('toggleLoginModal', false);
-                $store.commit('toggleRegisterModal', true);
-              "
-              >ليس لديك حساب؟</v-btn
-            >
-          </v-card-text>
-          <v-card-actions>
-            <v-btn
-              type="submit"
-              color="primary"
-              :disabled="!valid"
-              elevation="0"
-              >دخول</v-btn
-            >
-            <v-btn
-              color="primary"
-              text
-              @click.prevent="$store.commit('toggleLoginModal', false)"
-              >اغلاق
-            </v-btn>
-          </v-card-actions>
-        </v-form>
-      </v-card>
-    </v-dialog>
+          <v-btn color="primary" text :to="{ name: 'register' }"
+            >ليس لديك حساب؟</v-btn
+          >
+        </v-card-text>
+        <v-card-actions>
+          <v-btn
+            type="submit"
+            color="primary"
+            block
+            :disabled="!valid"
+            elevation="0"
+            >دخول</v-btn
+          >
+        </v-card-actions>
+      </v-form>
+    </v-card>
     <v-snackbar v-model="snackbar" :timeout="timeout">
       {{ snackbarText }}
       <template v-slot:action="{ attrs }">
@@ -72,10 +59,7 @@
 </template>
 
 <script>
-import axios from "axios";
-
 export default {
-  props: ["dialog"],
   data: () => ({
     valid: true,
     snackbar: false,
@@ -86,48 +70,25 @@ export default {
       email: "",
       password: ""
     },
-    passwordRules: [v => !!v || "كلمة المرور مطلوبة"],
+    passwordRules: [v => (v && v.length >= 2) || "كلمة المرور مطلوبة"],
     emailRules: [v => !!v || "البريد الالكتروني مطلوب"]
   }),
-
+  mounted() {
+    this.$refs.form.resetValidation();
+  },
   methods: {
     async userLogin() {
       try {
         if (this.$refs.form.validate()) {
-          let response = await this.$auth.loginWith("local", {
+          await this.$auth.loginWith("local", {
             data: this.login
           });
-          console.log(response);
-          this.clear();
-          this.$store.commit("toggleLoginModal", false);
+          this.$router.push("/");
+          this.$refs.form.reset();
         }
       } catch (err) {
         console.log(err);
       }
-    },
-    // login() {
-    //   if (this.$refs.form.validate()) {
-    //     this.$axios
-    //       .post("login", {
-    //         email: this.email,
-    //         password: this.password
-    //       })
-    //       .then(res => {
-    //         this.$store.dispatch("setToken", res.data);
-    //         this.clear();
-    //         this.$store.commit("toggleLoginModal", false);
-    //         this.$router.push("/");
-    //       })
-    //       .catch(err => {
-    //         if (err) {
-    //           this.snackbar = true;
-    //           this.snackbarText = err.response.data.message;
-    //         }
-    //       });
-    //   }
-    // },
-    clear() {
-      this.$refs.form.reset();
     }
   }
 };

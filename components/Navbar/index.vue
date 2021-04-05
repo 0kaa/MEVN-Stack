@@ -72,16 +72,15 @@
               </v-list-item>
             </v-list>
           </v-menu>
-          <v-btn color="primary">اضافة اعلان</v-btn>
+          <v-btn color="primary" nuxt :to="{ name: 'ad-create' }"
+            >اضافة اعلان</v-btn
+          >
         </div>
         <div class="logged-out" v-else>
-          <v-btn
-            text
-            color="primary"
-            @click.prevent="$store.commit('toggleLoginModal', true)"
-            >تسجيل دخول</v-btn
+          <v-btn text color="primary" :to="{ name: 'login' }">تسجيل دخول</v-btn>
+          <v-btn color="primary" nuxt :to="{ name: 'ad-create' }"
+            >اضافة اعلان</v-btn
           >
-          <v-btn color="primary">اضافة اعلان</v-btn>
         </div>
       </div>
       <v-btn rounded icon text @click="darkMode()">
@@ -89,8 +88,6 @@
         <v-icon v-else> mdi-white-balance-sunny </v-icon>
       </v-btn>
     </v-toolbar>
-    <Login v-if="$store.state.loginModal"></Login>
-    <Register v-if="$store.state.registerModal"></Register>
   </div>
 </template>
 

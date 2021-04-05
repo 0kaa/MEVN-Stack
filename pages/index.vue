@@ -1,59 +1,7 @@
 <template>
   <div class="home-page">
-    <!-- <Slider></Slider> -->
-    <section class="categories">
-      <v-container>
-        <h2 class="section-title mb-8">الاقسام</h2>
-        <v-row class="w-auto">
-          <v-col
-            lg=""
-            cols="6"
-            v-for="category in categories"
-            :key="category._id"
-          >
-            <category-box
-              :_id="category._id"
-              :title="category.title"
-              :icon="category.icon"
-            ></category-box>
-          </v-col>
-        </v-row>
-      </v-container>
-    </section>
-    <section class="new-added">
-      <v-container>
-        <h2 class="section-title mb-8">احدث الاضافات</h2>
-        <v-row class="w-auto">
-          <v-col lg="4" cols="6">
-            <item-box></item-box>
-          </v-col>
-          <v-col lg="4" cols="6">
-            <item-box></item-box>
-          </v-col>
-          <v-col lg="4" cols="6">
-            <item-box></item-box>
-          </v-col>
-          <v-col lg="4">
-            <item-box></item-box>
-          </v-col>
-          <v-col lg="4">
-            <item-box></item-box>
-          </v-col>
-          <v-col lg="4">
-            <item-box></item-box>
-          </v-col>
-          <v-col lg="4">
-            <item-box></item-box>
-          </v-col>
-          <v-col lg="4">
-            <item-box></item-box>
-          </v-col>
-          <v-col lg="4">
-            <item-box></item-box>
-          </v-col>
-        </v-row>
-      </v-container>
-    </section>
+    <categories :categories="categories"></categories>
+    <new-added-items :items="items" title="احدث الاضافات"></new-added-items>
   </div>
 </template>
 <script>
@@ -63,7 +11,7 @@ export default {
     categories: [],
     items: []
   }),
-  async asyncData({ $axios, store }) {
+  async asyncData({ $axios }) {
     const data = await $axios
       .get("/categories")
       .then(res => res.data.categories);

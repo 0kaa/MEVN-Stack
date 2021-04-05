@@ -27,5 +27,11 @@ export default {
 .category-box {
   border-radius: 5px;
   padding: 20px 10px;
+  &.nuxt-link-active {
+    color: #3c8de9 !important;
+    .v-icon {
+      color: #3c8de9;
+    }
+  }
 }
 </style>

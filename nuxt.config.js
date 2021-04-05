@@ -47,10 +47,17 @@ export default {
 
   auth: {
     strategies: {
+      facebook: {
+        endpoints: {
+          userInfo: 'https://graph.facebook.com/v6.0/me?fields=id,name,picture{url}'
+        },
+        clientId: '769413137021590',
+        scope: ['public_profile', 'email']
+      },
       local: {
         token: {
           property: 'token',
-          // required: true,
+          required: true,
           type: false
         },
         user: {
