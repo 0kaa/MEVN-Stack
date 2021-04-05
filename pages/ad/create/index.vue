@@ -97,7 +97,7 @@ export default {
   },
 
   data: () => ({
-    defaultButtonText: "ارفع الصورة",
+    defaultButtonText: "الصورة",
     selectedFile: "",
     isSelecting: false,
     rules: {

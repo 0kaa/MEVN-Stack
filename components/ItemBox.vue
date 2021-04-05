@@ -6,8 +6,8 @@
           <div class="user-section d-flex align-center text--primary">
             <nuxt-link to="profile" :title="items.user.username || 'user'">
               <v-img
-                v-if="items.image"
-                :src="items.image"
+                v-if="items.user.image"
+                :src="items.user.image"
                 class="user-img rounded-circle ml-3"
                 width="40"
                 height="40"
