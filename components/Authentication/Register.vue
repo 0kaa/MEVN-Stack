@@ -35,7 +35,7 @@
           <v-text-field
             :type="showPassword ? 'text' : 'password'"
             outlined
-            prepend-inner-icon="mdi-form-textbox-password"
+            prepend-inner-icon="mdi-lock-outline"
             :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
             @click:append="showPassword = !showPassword"
             label="كلمة المرور"

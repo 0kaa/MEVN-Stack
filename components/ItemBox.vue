@@ -14,11 +14,13 @@
               ></v-img>
               <v-img
                 v-else
-                class="user-img rounded-circle ml-3"
-                width="40"
-                height="40"
-                src="/v.png"
-              ></v-img>
+                class="user-img rounded-circle ml-3 d-flex align-center text-center"
+                :class="colors[Math.floor(Math.random() * 5)]"
+                width="40px"
+                height="40px"
+              >
+                {{ items.user.username ? items.user.username.charAt(0) : "" }}
+              </v-img>
             </nuxt-link>
             <div>
               <nuxt-link
@@ -89,7 +91,10 @@
 <script>
 export default {
   name: "item-box",
-  props: ["items"]
+  props: ["items"],
+  data: () => ({
+    colors: ["purple", "primary", "orange", "red", "grey"]
+  })
 };
 </script>
 <style lang="scss" scoped>
