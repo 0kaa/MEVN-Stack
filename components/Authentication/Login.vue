@@ -6,13 +6,15 @@
         @submit.prevent="userLogin()"
         ref="form"
         lazy-validation
+        autocomplete="off"
       >
         <v-card-title class="justify-center mb-8">تسجيل دخول</v-card-title>
         <v-card-text>
           <v-text-field
             label="البريد الالكتروني"
+            autocomplete="off"
             v-model="login.email"
-            :rules="emailRules"
+            :rules="rules.email"
             outlined
             prepend-inner-icon="mdi-account-circle"
             required
@@ -26,7 +28,7 @@
             outlined
             prepend-inner-icon="mdi-lock-outline"
             :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
-            :rules="passwordRules"
+            :rules="rules.password"
             @click:append="showPassword = !showPassword"
             required
           ></v-text-field>
@@ -70,8 +72,10 @@ export default {
       email: "",
       password: ""
     },
-    passwordRules: [v => (v && v.length >= 2) || "كلمة المرور مطلوبة"],
-    emailRules: [v => !!v || "البريد الالكتروني مطلوب"]
+    rules: {
+      password: [v => (v && v.length >= 2) || "كلمة المرور مطلوبة"],
+      email: [v => !!v || "البريد الالكتروني مطلوب"]
+    }
   }),
   mounted() {
     this.$refs.form.resetValidation();
