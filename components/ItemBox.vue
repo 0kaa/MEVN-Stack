@@ -81,8 +81,9 @@
             {{ items.description }}
           </p>
         </div>
-        <div class="box-img">
+        <div class="box-img position-relative">
           <v-img :aspect-ratio="4 / 3" :src="items.image"></v-img>
+          <div class="badge primary">{{ items.type.title }}</div>
         </div>
       </div>
     </div>
@@ -153,6 +154,16 @@ export default {
         font-size: 12px;
         font-weight: normal;
         margin-top: 15px;
+      }
+    }
+    .box-img {
+      .badge {
+        position: absolute;
+        top: 10px;
+        padding: 3px 10px;
+        border-radius: 2px;
+        font-size: 12px;
+        right: 10px;
       }
     }
   }

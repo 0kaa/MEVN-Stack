@@ -6,11 +6,12 @@
 </template>
 <script>
 export default {
-  name: "Home",
+  name: "home",
   data: () => ({
     categories: [],
     items: []
   }),
+
   async asyncData({ $axios }) {
     const data = await $axios
       .get("/categories")

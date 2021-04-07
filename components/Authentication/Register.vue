@@ -13,8 +13,6 @@
             outlined
             prepend-inner-icon="mdi-account-circle"
             label="اسم المستخدم"
-            class="mb-8"
-            hide-details
             v-model="form.username"
             :rules="rules.username"
             required
@@ -23,8 +21,7 @@
 
           <v-text-field
             outlined
-            class="mb-8"
-            hide-details
+            type="email"
             prepend-inner-icon="mdi-email"
             label="البريد الالكتروني"
             v-model="form.email"
@@ -39,8 +36,6 @@
             :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
             @click:append="showPassword = !showPassword"
             label="كلمة المرور"
-            class="mb-8"
-            hide-details
             v-model="form.password"
             :rules="rules.password"
             required
@@ -59,12 +54,10 @@
         </v-card-actions>
       </v-form>
     </v-card>
-    <v-snackbar v-model="snackbar" :timeout="timeout">
+    <v-snackbar v-model="snackbar" :timeout="5000" color="red">
       {{ snackbarText }}
       <template v-slot:action="{ attrs }">
-        <v-btn color="red" text v-bind="attrs" @click="snackbar = false"
-          >اغلاق</v-btn
-        >
+        <v-btn text v-bind="attrs" @click="snackbar = false">اغلاق</v-btn>
       </template>
     </v-snackbar>
   </div>
@@ -79,29 +72,28 @@ export default {
       email: "",
       image: ""
     },
+    showPassword: false,
+    valid: true,
     snackbar: false,
     snackbarText: "",
-    showPassword: false,
-    timeout: 5000,
-    valid: true,
     rules: {
-      username: [v => !!v || "username is required"],
-      password: [v => !!v || "password is required"],
-      email: [v => !!v || "E-mail is required"]
+      username: [v => !!v || "اسم المستخدم مطلوب"],
+      password: [
+        v => !!v || "كلمة المرور مطلوبة",
+        v => (v && v.length >= 6) || "لابد ان يكون كلمة المرور اكثر من 6 ارقام"
+      ],
+      email: [
+        v => !!v || "البريد الالكتروني مطلوب",
+        v => /.+@.+\..+/.test(v) || "يجب ان يكون البريد الاكتروني صحيح"
+      ]
     }
   }),
 
   methods: {
     async register() {
       try {
-        const formData = new FormData();
-
-        formData.append("username", this.form.username);
-        formData.append("password", this.form.password);
-        formData.append("email", this.form.email);
-
         if (this.$refs.form.validate()) {
-          await this.$axios.post("/signup", formData);
+          await this.$axios.post("/signup", this.form);
           await this.$auth.loginWith("local", {
             data: {
               email: this.form.email,
@@ -113,7 +105,7 @@ export default {
         }
       } catch (err) {
         this.snackbar = true;
-        this.snackbarText = err;
+        this.snackbarText = err.response.data.message;
       }
     },
     clear() {

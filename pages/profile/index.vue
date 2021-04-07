@@ -15,7 +15,9 @@
           width="180"
           height="180"
         >
-          {{ $auth.state.user.username.charAt(0) }}
+          {{
+            $auth.state.user.username ? $auth.state.user.username.charAt(0) : ""
+          }}
         </v-img>
         <h1 class="high--dark">
           {{ $auth.state.user.username }}
@@ -39,6 +41,7 @@
 </template>
 <script>
 export default {
+  name: "profile",
   middleware: "auth",
   data: () => ({
     tab: null,

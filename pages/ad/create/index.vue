@@ -73,7 +73,7 @@
         </v-card-actions>
       </v-form>
     </v-card>
-    <v-snackbar v-model="snackbar" :timeout="timeout">
+    <v-snackbar v-model="snackbar" :timeout="5000">
       {{ snackbarText }}
       <template v-slot:action="{ attrs }">
         <v-btn color="red" text v-bind="attrs" @click="snackbar = false"
@@ -158,6 +158,7 @@ export default {
         formData.append("user", this.$auth.state.user._id);
         formData.append("category", this.ad.category);
         formData.append("image", this.selectedFile);
+        formData.append("type", this.ad.type);
 
         if (this.$refs.form.validate()) {
           await this.$axios.post("/items", formData, config);
@@ -166,7 +167,12 @@ export default {
           this.$refs.form.reset();
         }
       } catch (err) {
-        console.log(err.response);
+        this.snackbar = true;
+        if (err.response.data.errors.image) {
+          this.snackbarText = err.response.data.errors.image.message;
+        } else {
+          this.snackbarText = err.message;
+        }
       }
     }
   }

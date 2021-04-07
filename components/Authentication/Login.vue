@@ -15,6 +15,7 @@
             autocomplete="off"
             v-model="login.email"
             :rules="rules.email"
+            type="email"
             outlined
             prepend-inner-icon="mdi-account-circle"
             required
@@ -49,7 +50,7 @@
         </v-card-actions>
       </v-form>
     </v-card>
-    <v-snackbar v-model="snackbar" :timeout="timeout">
+    <v-snackbar v-model="snackbar" :timeout="5000">
       {{ snackbarText }}
       <template v-slot:action="{ attrs }">
         <v-btn color="red" text v-bind="attrs" @click="snackbar = false"
@@ -65,7 +66,7 @@ export default {
   data: () => ({
     valid: true,
     snackbar: false,
-    timeout: 5000,
+
     showPassword: false,
     snackbarText: "",
     login: {
@@ -73,8 +74,14 @@ export default {
       password: ""
     },
     rules: {
-      password: [v => (v && v.length >= 2) || "كلمة المرور مطلوبة"],
-      email: [v => !!v || "البريد الالكتروني مطلوب"]
+      password: [
+        v => !!v || "كلمة المرور مطلوبة",
+        v => (v && v.length >= 6) || "لابد ان يكون كلمة المرور اكثر من 6 ارقام"
+      ],
+      email: [
+        v => !!v || "البريد الالكتروني مطلوب",
+        v => /.+@.+\..+/.test(v) || "يجب ان يكون البريد الاكتروني صحيح"
+      ]
     }
   }),
   mounted() {
@@ -91,7 +98,8 @@ export default {
           this.$refs.form.reset();
         }
       } catch (err) {
-        console.log(err);
+        this.snackbar = true;
+        this.snackbarText = err.response.data.message;
       }
     }
   }

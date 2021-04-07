@@ -2,7 +2,7 @@
   <v-app>
     <Navbar></Navbar>
     <v-main class="py-5 main-content">
-      <nuxt keep-alive :exclude="['home']" />
+      <nuxt keep-alive :keep-alive-props="{ exclude: ['home', 'category'] }" />
     </v-main>
   </v-app>
 </template>
