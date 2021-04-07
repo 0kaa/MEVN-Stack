@@ -24,7 +24,7 @@
             v-model="login.password"
             class="mb-2"
             outlined
-            prepend-inner-icon="mdi-form-textbox-password"
+            prepend-inner-icon="mdi-lock-outline"
             :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
             :rules="passwordRules"
             @click:append="showPassword = !showPassword"
