@@ -5,7 +5,7 @@ export default function ({ store }) {
 
     Vue.use(new VueSocketIO({
         debug: false,
-        connection: 'http://localhost:5000/',
+        connection: 'https://hatlaqini-back.herokuapp.com/',
         vuex: {
             store,
             actionPrefix: 'SOCKET_',
