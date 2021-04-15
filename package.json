@@ -2,12 +2,13 @@
   "name": "express-nuxt",
   "version": "1.0.0",
   "private": true,
-  "proxy": "http://127.0.0.1:5000/",
+
   "scripts": {
     "dev": "nuxt",
     "build": "nuxt build",
     "start": "nuxt start",
     "generate": "nuxt generate",
+    "heroku-postbuild": "npm run build && npm start",
     "test": "jest"
   },
   "dependencies": {
