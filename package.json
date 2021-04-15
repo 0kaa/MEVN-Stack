@@ -18,7 +18,10 @@
     "core-js": "^3.6.5",
     "js-cookie": "^2.2.1",
     "moment": "^2.29.1",
-    "nuxt": "^2.14.6"
+    "nuxt": "^2.14.6",
+    "socket.io": "^4.0.1",
+    "socket.io-client": "^4.0.1",
+    "vue-socket.io": "^3.0.10"
   },
   "devDependencies": {
     "@nuxtjs/vuetify": "^1.11.2",

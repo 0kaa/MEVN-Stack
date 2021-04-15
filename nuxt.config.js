@@ -21,7 +21,7 @@ export default {
 
   // Plugins to run before rendering page (https://go.nuxtjs.dev/config-plugins)
 
-  plugins: ["~plugins/filter.js"],
+  plugins: ["~plugins/filter.js", { src: '~plugins/socket.js', ssr: false }],
 
   // Auto import components (https://go.nuxtjs.dev/config-components)
   components: true,
@@ -42,7 +42,7 @@ export default {
 
   // Axios module configuration (https://go.nuxtjs.dev/config-axios)
   axios: {
-    baseURL: "http://127.0.0.1:5000"
+    baseURL: "https://hatlaqini-back.herokuapp.com/"
   },
 
   auth: {

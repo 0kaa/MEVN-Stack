@@ -1,7 +1,7 @@
 <template>
   <div class="text-center">
     <h1 class="mb-4">الصفحة غير موجودة</h1>
-    <v-btn color="primary" to="/">Return To Home</v-btn>
+    <v-btn color="primary" to="/">الرجوع للرئيسية</v-btn>
   </div>
 </template>
 

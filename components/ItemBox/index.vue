@@ -4,7 +4,10 @@
       <div class="box-inner">
         <div class="box-header d-flex align-center justify-space-between">
           <div class="user-section d-flex align-center text--primary">
-            <nuxt-link to="profile" :title="items.user.username || 'user'">
+            <nuxt-link
+              :to="`/user/${items.user._id}`"
+              :title="items.user.username || 'user'"
+            >
               <v-img
                 v-if="items.user.image"
                 :src="items.user.image"
@@ -25,7 +28,7 @@
             <div>
               <nuxt-link
                 :title="items.user.username || 'user'"
-                to="profile"
+                :to="`/user/${items.user._id}`"
                 class="mb-1 text--primary"
                 v-if="items.user"
                 >{{ items.user.username }}</nuxt-link
@@ -59,21 +62,25 @@
               </div>
             </div>
           </div>
-          <v-menu offset-y bottom>
+          <!-- <v-menu offset-y bottom>
             <template v-slot:activator="{ on, attrs }">
               <v-btn icon v-bind="attrs" v-on="on">
                 <v-icon>mdi-dots-horizontal</v-icon>
               </v-btn>
             </template>
 
-            <v-list min-width="100">
-              <v-list-item link>
-                <v-list-item-title class="font-weight-medium red--text"
-                  >حذف</v-list-item-title
+            <v-list min-width="200">
+              v-if="items.user._id === $auth.$state.user._id"
+              <v-list-item link @click="deleteItem()">
+                <v-list-item-title
+                  class="red--text d-flex align-center justify-space-between"
                 >
+                  <div>حذف</div>
+                  <v-icon color="red">mdi-delete</v-icon>
+                </v-list-item-title>
               </v-list-item>
             </v-list>
-          </v-menu>
+          </v-menu> -->
         </div>
         <div class="box-content">
           <h3 class="ad-title">{{ items.title }}</h3>
@@ -95,7 +102,12 @@ export default {
   props: ["items"],
   data: () => ({
     colors: ["purple", "primary", "orange", "red", "grey"]
-  })
+  }),
+  methods: {
+    deleteItem() {
+      alert("delete");
+    }
+  }
 };
 </script>
 <style lang="scss" scoped>

@@ -50,10 +50,14 @@
         </v-card-actions>
       </v-form>
     </v-card>
-    <v-snackbar v-model="snackbar" :timeout="5000">
+    <v-snackbar v-model="snackbar" :timeout="5000" color="red">
       {{ snackbarText }}
       <template v-slot:action="{ attrs }">
-        <v-btn color="red" text v-bind="attrs" @click="snackbar = false"
+        <v-btn
+          class="v-btn--active"
+          text
+          v-bind="attrs"
+          @click="snackbar = false"
           >اغلاق</v-btn
         >
       </template>
