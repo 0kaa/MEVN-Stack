@@ -1,31 +1,28 @@
 <template>
   <div>
     <v-toolbar elevation="0">
-      <!-- <nuxt-link to="/" exact-active-class exact class="logo text--primary">
-        <img src="/img/svg/logo.svg" alt="logo" />
-
-        <h3 class="logo-brand">
-          <span class="logo-name">{{ LogoName }}</span>
-          <span class="logo-description">{{ LogoDescription }}</span>
-        </h3>
-      </nuxt-link> -->
       <nuxt-link
         to="/"
         exact-active-class
         exact
         class="logo text--primary ml-5"
       >
-        <h3 class="logo-brand">الشعار</h3>
+        <h3 class="logo-brand primary--text">هتلاقيني</h3>
       </nuxt-link>
-
       <v-spacer></v-spacer>
-
       <div class="hidden-sm-only hidden-xs-only search-section">
-        <!-- <v-btn nuxt text depressed to="/profile">الرئيسية</v-btn> -->
-        <search></search>
+        <search :searchNav="true"></search>
       </div>
-
       <v-spacer></v-spacer>
+      <v-btn
+        fab
+        small
+        class="ml-2 hidden-md-and-up v-btn--active"
+        depressed
+        @click="$store.commit('searchToggle', true)"
+      >
+        <v-icon>mdi-magnify</v-icon>
+      </v-btn>
       <div class="sign">
         <div class="logged-in" v-if="$auth.$state.loggedIn">
           <v-menu
@@ -38,11 +35,11 @@
             <template v-slot:activator="{ on, attrs }">
               <v-btn
                 fab
-                icon
                 v-bind="attrs"
                 v-on="on"
                 small
                 class="overflow-hidden ml-4"
+                to="/profile"
               >
                 <v-img
                   v-if="$auth.user.image"
@@ -52,10 +49,16 @@
                 />
                 <v-img
                   v-else
-                  src="/v.png"
-                  alt="user profile"
-                  class="user-profile"
-                />
+                  class="d-flex align-center text-center primary"
+                  width="50"
+                  height="50"
+                >
+                  {{
+                    $auth.$state.user.username
+                      ? $auth.$state.user.username.charAt(0).toUpperCase()
+                      : ""
+                  }}
+                </v-img>
               </v-btn>
             </template>
 
@@ -65,6 +68,11 @@
                   الصفحة الشخصية
                 </v-list-item-title>
               </v-list-item>
+              <v-list-item link :to="{ name: 'conversations' }">
+                <v-list-item-title>
+                  المحادثات
+                </v-list-item-title>
+              </v-list-item>
               <v-list-item @click="$auth.logout()">
                 <v-list-item-title class="primary--text">
                   تسجيل خروج
@@ -72,22 +80,38 @@
               </v-list-item>
             </v-list>
           </v-menu>
-          <v-btn color="primary" nuxt :to="{ name: 'ad-create' }"
+          <v-btn
+            color="primary"
+            nuxt
+            :to="{ name: 'ad-create' }"
+            class="hidden-sm-and-down"
             >اضافة اعلان</v-btn
           >
         </div>
         <div class="logged-out" v-else>
           <v-btn text color="primary" :to="{ name: 'login' }">تسجيل دخول</v-btn>
-          <v-btn color="primary" nuxt :to="{ name: 'ad-create' }"
+          <v-btn
+            color="primary"
+            nuxt
+            :to="{ name: 'ad-create' }"
+            class="hidden-sm-and-down"
             >اضافة اعلان</v-btn
           >
         </div>
       </div>
-      <v-btn rounded icon text @click="darkMode()">
-        <v-icon v-if="!$vuetify.theme.dark"> mdi-weather-night </v-icon>
-        <v-icon v-else> mdi-white-balance-sunny </v-icon>
-      </v-btn>
     </v-toolbar>
+    <v-btn
+      color="primary hidden-md-and-up"
+      fixed
+      bottom
+      right
+      fab
+      app
+      :to="{ name: 'ad-create' }"
+    >
+      <v-icon>mdi-plus</v-icon>
+    </v-btn>
+    <search-modal v-if="$store.state.search"></search-modal>
   </div>
 </template>
 

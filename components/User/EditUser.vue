@@ -49,6 +49,7 @@
         prepend-inner-icon="mdi-account-circle"
         required
       ></v-text-field>
+
       <v-btn
         type="submit"
         color="primary"
@@ -91,7 +92,7 @@ export default {
 
   async fetch() {
     await this.$auth.fetchUser();
-    this.user = { ...this.$auth.state.user };
+    this.user = { ...this.$auth.$state.user };
   },
   activated() {
     this.$fetch();

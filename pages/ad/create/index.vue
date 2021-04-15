@@ -155,7 +155,7 @@ export default {
         };
         formData.append("title", this.ad.title);
         formData.append("description", this.ad.description);
-        formData.append("user", this.$auth.state.user._id);
+        formData.append("user", this.$auth.$state.user._id);
         formData.append("category", this.ad.category);
         formData.append("image", this.selectedFile);
         formData.append("type", this.ad.type);
