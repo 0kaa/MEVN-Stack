@@ -2,7 +2,7 @@
   "name": "express-nuxt",
   "version": "1.0.0",
   "private": true,
-
+  "proxy": "https://hatlaqini-back.herokuapp.com/",
   "scripts": {
     "dev": "nuxt",
     "build": "nuxt build",
