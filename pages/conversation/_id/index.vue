@@ -58,9 +58,10 @@
                       ? ''
                       : 'my-msg primary white--text'
                   "
-                  v-text="message.msg"
                   style="text-align:start"
-                ></div>
+                >
+                  {{ message.msg }}
+                </div>
               </div>
             </li>
           </ul>
