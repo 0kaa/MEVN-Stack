@@ -104,7 +104,7 @@
       color="primary hidden-md-and-up"
       fixed
       bottom
-      right
+      left
       fab
       app
       :to="{ name: 'ad-create' }"
