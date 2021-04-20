@@ -48,17 +48,7 @@ export default {
 
   auth: {
 
-    strategies: {
-      google: {
-        clientId: '498652420277-7q87tsi1gt18ffintmdhtkfma11ni3lk.apps.googleusercontent.com'
-      },
-      facebook: {
-        endpoints: {
-          userInfo: 'https://graph.facebook.com/v6.0/me?fields=id,name,picture{url}'
-        },
-        clientId: '769413137021590',
-        scope: ['public_profile', 'email']
-      },
+    strategies: {   
       local: {
         token: {
           property: 'token',
