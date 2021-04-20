@@ -4,7 +4,8 @@
       :to="`/conversation/${chat._id}`"
       v-for="chat in conversations"
       :key="chat._id"
-      class="mb-5 d-block conversation-item text--primary"
+      class="mb-5 d-block conversation-item text--primary v-btn "
+      :class="$vuetify.theme.dark ? 'theme--dark' : 'theme--light'"
     >
       <div class="user-header d-flex align-center justify-space-between">
         <div class="d-flex align-center">
@@ -39,10 +40,26 @@
               }}
             </h3>
 
-            <p class="ma-0 user-msg">{{ chat.latest_msg }}</p>
+            <p
+              class="ma-0 user-msg"
+              v-if="messages && messages.conversation_id == chat._id"
+            >
+              {{ messages.msg }}
+            </p>
+            <p class="ma-0 user-msg" v-else>
+              {{ chat.latest_msg }}
+            </p>
           </div>
         </div>
-        <div class="date">{{ chat.updatedAt | formatDate }}</div>
+        <div
+          class="date"
+          v-if="messages && messages.conversation_id == chat._id"
+        >
+          {{ messages.updatedAt | formatDate }}
+        </div>
+        <div class="date" v-else>
+          {{ chat.updatedAt | formatDate }}
+        </div>
       </div>
     </nuxt-link>
   </div>
@@ -54,7 +71,20 @@
 <script>
 export default {
   name: "ConversationsComponent",
-  props: ["conversations"]
+  props: ["conversations"],
+  data: () => ({
+    messages: ""
+  }),
+  computed: {
+    ourConv() {
+      return this.conversations.reverse();
+    }
+  },
+  sockets: {
+    chatMessage: function(res) {
+      this.messages = res;
+    }
+  }
 };
 </script>
 
@@ -71,6 +101,7 @@ export default {
       overflow: hidden;
       text-overflow: ellipsis;
       max-width: 200px;
+      text-transform: initial;
     }
     .user-msg {
       font-size: 13px;
@@ -78,6 +109,7 @@ export default {
       overflow: hidden;
       text-overflow: ellipsis;
       max-width: 180px;
+      text-transform: initial;
     }
   }
   .date {

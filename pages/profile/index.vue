@@ -6,7 +6,7 @@
           <v-img
             v-if="$auth.$state.user.image"
             :src="$auth.$state.user.image"
-            class="user-img rounded-circle"
+            class="user-img rounded-circle primary"
             width="180"
             height="180"
           ></v-img>

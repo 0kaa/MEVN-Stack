@@ -45,6 +45,7 @@
         autocomplete="off"
         v-model="user.username"
         :rules="rules.email"
+        :counter="30"
         outlined
         prepend-inner-icon="mdi-account-circle"
         required
@@ -74,12 +75,15 @@ export default {
     valid: true,
     user: {},
     snackbar: false,
-
     snackbarText: "",
     isSelecting: false,
     imgPreview: "",
     rules: {
-      email: [v => !!v || "البريد الالكتروني مطلوب"]
+      email: [
+        v => !!v || "اسم المستخدم مطلوبو",
+        v => (v && v.length >= 3) || "اسم المستخدم لابد ان يكون اكثر من 3 حروف",
+        v => (v && v.length <= 30) || "اسم المستخدم لا يمكن ان يزيد عن 30 حرف"
+      ]
     }
   }),
   computed: {

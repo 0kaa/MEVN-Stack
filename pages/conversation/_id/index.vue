@@ -1,7 +1,7 @@
 <template>
   <v-container>
     <v-row class="w-auto">
-      <v-col md="4">
+      <v-col md="4" class="hidden-sm-and-down">
         <conversations-component
           :conversations="conversations"
         ></conversations-component>
@@ -30,6 +30,10 @@
                 "
               >
                 <div
+                  v-if="
+                    $auth.loggedIn &&
+                      message.sender_id._id !== $auth.$state.user._id
+                  "
                   :class="
                     $auth.loggedIn &&
                     message.sender_id._id !== $auth.$state.user._id
@@ -38,10 +42,6 @@
                   "
                 >
                   <v-img
-                    v-if="
-                      $auth.loggedIn &&
-                        message.sender_id._id !== $auth.$state.user._id
-                    "
                     :src="message.sender_id.image"
                     width="35"
                     height="35"
@@ -60,7 +60,14 @@
                   "
                   style="text-align:start"
                 >
-                  {{ message.msg }}
+                  <v-tooltip bottom>
+                    <template v-slot:activator="{ on, attrs }">
+                      <div v-bind="attrs" v-on="on">{{ message.msg }}</div>
+                    </template>
+                    <div class="msg-date mt-2">
+                      {{ message.updatedAt | formatDate }}
+                    </div>
+                  </v-tooltip>
                 </div>
               </div>
             </li>
@@ -108,7 +115,6 @@
 export default {
   name: "conversation",
   data: () => ({
-    soundurl: "/sound.mp3",
     messages: [],
     valid: false,
     conversation: {},
@@ -235,6 +241,9 @@ export default {
     background-color: #ebebeb;
   }
 }
+.msg-date {
+  font-size: 11px;
+}
 .msg {
   font-size: 13px;
   text-align: start;
@@ -242,8 +251,11 @@ export default {
   background-color: #1e1e1e;
   padding: 10px 20px;
   border-radius: 0 100px 100px 0;
-  max-width: 80%;
+  max-width: 415px;
   line-height: 1.6;
+  @media (max-width: 768px) {
+    max-width: 280px;
+  }
   &.my-msg {
     border-radius: 100px 0 0 100px;
   }

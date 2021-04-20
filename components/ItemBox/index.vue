@@ -11,7 +11,7 @@
               <v-img
                 v-if="items.user.image"
                 :src="items.user.image"
-                class="user-img rounded-circle ml-3"
+                class="user-img rounded-circle ml-3 primary"
                 width="40"
                 height="40"
               ></v-img>
@@ -62,7 +62,7 @@
               </div>
             </div>
           </div>
-          <!-- <v-menu offset-y bottom>
+          <v-menu offset-y bottom>
             <template v-slot:activator="{ on, attrs }">
               <v-btn icon v-bind="attrs" v-on="on">
                 <v-icon>mdi-dots-horizontal</v-icon>
@@ -70,8 +70,27 @@
             </template>
 
             <v-list min-width="200">
-              v-if="items.user._id === $auth.$state.user._id"
-              <v-list-item link @click="deleteItem()">
+              <v-list-item
+                v-if="
+                  $auth.loggedIn && items.user._id === $auth.$state.user._id
+                "
+                link
+                @click="updateItem(items._id, items.user._id)"
+              >
+                <v-list-item-title
+                  class=" d-flex align-center justify-space-between"
+                >
+                  <div>تعديل</div>
+                  <v-icon>mdi-pen</v-icon>
+                </v-list-item-title>
+              </v-list-item>
+              <v-list-item
+                v-if="
+                  $auth.loggedIn && items.user._id === $auth.$state.user._id
+                "
+                link
+                @click="deleteItem(items._id, items.user._id)"
+              >
                 <v-list-item-title
                   class="red--text d-flex align-center justify-space-between"
                 >
@@ -79,8 +98,22 @@
                   <v-icon color="red">mdi-delete</v-icon>
                 </v-list-item-title>
               </v-list-item>
+              <v-list-item
+                v-if="
+                  $auth.loggedIn && items.user._id !== $auth.$state.user._id
+                "
+                link
+                @click="sendMessage(items.user._id)"
+              >
+                <v-list-item-title
+                  class="d-flex align-center justify-space-between"
+                >
+                  <div>ارسل رسالة</div>
+                  <v-icon>mdi-chat</v-icon>
+                </v-list-item-title>
+              </v-list-item>
             </v-list>
-          </v-menu> -->
+          </v-menu>
         </div>
         <div class="box-content">
           <h3 class="ad-title">{{ items.title }}</h3>
@@ -104,8 +137,29 @@ export default {
     colors: ["purple", "primary", "orange", "red", "grey"]
   }),
   methods: {
-    deleteItem() {
-      alert("delete");
+    deleteItem(id, userID) {
+      if (this.$auth.$state.user._id == userID) {
+        this.$router.push(`/ad/delete/${id}`);
+      }
+    },
+    updateItem(id, userID) {
+      if (this.$auth.$state.user._id == userID) {
+        this.$router.push(`/ad/edit/${id}`);
+      }
+    },
+    sendMessage(id) {
+      if (this.$auth.loggedIn) {
+        this.$axios
+          .post("/chat/conversation", {
+            sender_id: this.$auth.$state.user._id,
+            received_id: id
+          })
+          .then(res => {
+            this.$router.push(`/conversation/${res.data.conversation._id}`);
+          });
+      } else {
+        this.$router.push("/login");
+      }
     }
   }
 };

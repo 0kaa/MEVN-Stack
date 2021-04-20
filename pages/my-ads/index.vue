@@ -1,5 +1,5 @@
 <template>
-  <div class="user-profile">
+  <div class="my-ads">
     <v-container>
       <div class="justify-center d-flex align-center flex-column mb-8">
         <v-img
@@ -20,16 +20,15 @@
         <h1 class="high--dark mt-2 mb-4">
           {{ user.username }}
         </h1>
-        <v-btn @click="sendMessage" color="primary">ارسل رسالة</v-btn>
       </div>
-      <new-added-items :items="items" title="احدث الاضافات"></new-added-items>
+      <new-added-items :items="items" title="اعلاناتي"></new-added-items>
     </v-container>
   </div>
 </template>
 
 <script>
 export default {
-  name: "user-profile",
+  name: "my-ads",
   async asyncData({ $axios, params, redirect, $auth, error }) {
     try {
       return await $axios.get(`/user/${params.id}`).then(res => {
@@ -44,21 +43,18 @@ export default {
       return redirect("/not_found");
     }
   },
-  methods: {
-    sendMessage() {
-      if (this.$auth.loggedIn) {
-        this.$axios
-          .post("/chat/conversation", {
-            sender_id: this.$auth.$state.user._id,
-            received_id: this.user._id
-          })
-          .then(res => {
-
-            this.$router.push(`/conversation/${res.data.conversation._id}`);
-          });
-      } else {
-        this.$router.push("/login");
-      }
+  async asyncData({ $axios, redirect, $auth }) {
+    try {
+      return await $axios.get(`/user/${$auth.$state.user._id}`).then(res => {
+        if (
+          !$auth.$state.loggedIn &&
+          res.data.user._id !== $auth.$state.user._id
+        )
+          return redirect("/login");
+        else return { user: res.data.user, items: res.data.items };
+      });
+    } catch (error) {
+      return redirect("/not-found");
     }
   }
 };

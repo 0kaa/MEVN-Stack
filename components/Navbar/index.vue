@@ -17,7 +17,7 @@
       <v-btn
         fab
         small
-        class="ml-2 hidden-md-and-up v-btn--active"
+        class="ml-2 hidden-md-and-up"
         depressed
         @click="$store.commit('searchToggle', true)"
       >
@@ -38,8 +38,7 @@
                 v-bind="attrs"
                 v-on="on"
                 small
-                class="overflow-hidden ml-4"
-                to="/profile"
+                class="overflow-hidden ml-4 primary"
               >
                 <v-img
                   v-if="$auth.user.image"
@@ -66,6 +65,11 @@
               <v-list-item link to="/profile">
                 <v-list-item-title>
                   الصفحة الشخصية
+                </v-list-item-title>
+              </v-list-item>
+              <v-list-item link :to="{ name: 'my-ads' }">
+                <v-list-item-title>
+                  اعلاناتي
                 </v-list-item-title>
               </v-list-item>
               <v-list-item link :to="{ name: 'conversations' }">
