@@ -1,6 +1,5 @@
 <template>
   <v-app>
-    <v-btn @click="$auth.loginWith('google')" color="success">Google</v-btn>
     <Navbar></Navbar>
     <v-main class="py-5 main-content">
       <nuxt
