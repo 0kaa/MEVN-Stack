@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "nuxt",
     "build": "nuxt build",
-    "start": "nuxt start",
+    "start": "nuxt start --hostname hatlaqini.demo.asol-tec.com --port 49005",
     "generate": "nuxt generate",
     "heroku-postbuild": "npm run build && npm start",
     "test": "jest",
